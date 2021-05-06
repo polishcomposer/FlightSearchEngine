@@ -1,13 +1,18 @@
 ﻿@model FlightSE.Models.SearchQuery
+
 @{
-    ViewData["Title"] = "Find Your Flight!";
+    ViewData["Title"] = "Edit";
 }
+
+<h1>Edit</h1>
+
 <h4>SearchQuery</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ID" />
             <div class="form-group">
                 <label asp-for="UserID" class="control-label"></label>
                 <input asp-for="UserID" class="form-control" />
@@ -69,64 +74,16 @@
                 <span asp-validation-for="DateTo" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
-<div class="text-center">
-    <h1 class="display-4">Find Your Flight</h1>
-    <h2 class="lead">Latest Searches</h2>
-    <div class="row row-cols-1 row-cols-md-3 g-4">
-        @{
-            int countSearches = 0;
-            SearchQuery newModel = new SearchQuery();
-           
-        }
 
-        @foreach (var item in ViewBag.SearchHistory)
-        {
-
-            newModel.GetPicture(@item.To);
-            <div class="col">
-                <div class="card h-100">
-                    <img src="@newModel.ImgAddress["photos"][0]["src"]["medium"]" class="card-img-top" alt="@item.To">
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            From @item.From <br />
-                            To @item.To
-                        </h5>
-                        <p class="card-text">
-                            <a href="#" class="btn btn-primary">View</a>
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            /*  @item.UserID
-             @item.Way
-             @item.Adults
-            @item.Children
-             @item.Infant
-            @item.Class
-              @item.Stopovers
-            @item.Currency
-               @item.QueryDate
-            @item.DateFrom
-               @item.DateTo
-             */
-
-
-            if (countSearches == 2)
-            {
-                break;
-            }
-            countSearches += 1;
-        }
-    </div>
-
+<div>
+    <a asp-action="Index">Back to List</a>
 </div>
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
-

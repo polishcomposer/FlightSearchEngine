@@ -1,7 +1,11 @@
 ﻿@model FlightSE.Models.SearchQuery
+
 @{
-    ViewData["Title"] = "Find Your Flight!";
+    ViewData["Title"] = "Create";
 }
+
+<h1>Create</h1>
+
 <h4>SearchQuery</h4>
 <hr />
 <div class="row">
@@ -74,59 +78,11 @@
         </form>
     </div>
 </div>
-<div class="text-center">
-    <h1 class="display-4">Find Your Flight</h1>
-    <h2 class="lead">Latest Searches</h2>
-    <div class="row row-cols-1 row-cols-md-3 g-4">
-        @{
-            int countSearches = 0;
-            SearchQuery newModel = new SearchQuery();
-           
-        }
 
-        @foreach (var item in ViewBag.SearchHistory)
-        {
-
-            newModel.GetPicture(@item.To);
-            <div class="col">
-                <div class="card h-100">
-                    <img src="@newModel.ImgAddress["photos"][0]["src"]["medium"]" class="card-img-top" alt="@item.To">
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            From @item.From <br />
-                            To @item.To
-                        </h5>
-                        <p class="card-text">
-                            <a href="#" class="btn btn-primary">View</a>
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            /*  @item.UserID
-             @item.Way
-             @item.Adults
-            @item.Children
-             @item.Infant
-            @item.Class
-              @item.Stopovers
-            @item.Currency
-               @item.QueryDate
-            @item.DateFrom
-               @item.DateTo
-             */
-
-
-            if (countSearches == 2)
-            {
-                break;
-            }
-            countSearches += 1;
-        }
-    </div>
-
+<div>
+    <a asp-action="Index">Back to List</a>
 </div>
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
-
