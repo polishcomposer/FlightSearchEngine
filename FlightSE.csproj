@@ -3,6 +3,8 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>aspnet-FlightSE-277FAC80-DCB4-4A96-8B3E-5C78403331B5</UserSecretsId>
+    <NoWin32Manifest>true</NoWin32Manifest>
+    <ApplicationIcon>wwwroot\favicon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>

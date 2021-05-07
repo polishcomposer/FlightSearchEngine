@@ -12,7 +12,6 @@ namespace FlightSE.Models
     public class IndexModel
     {
         public JObject MyData { get; set; }
-
-   
+        public JObject MyFlight { get; internal set; }
     }
 }

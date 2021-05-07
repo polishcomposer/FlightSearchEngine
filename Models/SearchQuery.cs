@@ -27,7 +27,7 @@ namespace FlightSE.Models
         [Required]
         public string Class { get; set; }
         public int Stopovers { get; set; }
-        [Required, StringLength(3, MinimumLength = 3)]
+        [Required]
         public string Currency { get; set; }
         [Required]
         public string From { get; set; }

@@ -1,87 +1,118 @@
 ﻿@model FlightSE.Models.SearchQuery
 @{
-    ViewData["Title"] = "Find Your Flight!";
+    ViewData["Title"] = "Find Your Flight";
 }
-<h4>SearchQuery</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="UserID" class="control-label"></label>
-                <input asp-for="UserID" class="form-control" />
-                <span asp-validation-for="UserID" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Way" class="control-label"></label>
-                <input asp-for="Way" class="form-control" />
-                <span asp-validation-for="Way" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Adults" class="control-label"></label>
-                <input asp-for="Adults" class="form-control" />
-                <span asp-validation-for="Adults" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Children" class="control-label"></label>
-                <input asp-for="Children" class="form-control" />
-                <span asp-validation-for="Children" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Infant" class="control-label"></label>
-                <input asp-for="Infant" class="form-control" />
-                <span asp-validation-for="Infant" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Class" class="control-label"></label>
-                <input asp-for="Class" class="form-control" />
-                <span asp-validation-for="Class" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Stopovers" class="control-label"></label>
-                <input asp-for="Stopovers" class="form-control" />
-                <span asp-validation-for="Stopovers" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Currency" class="control-label"></label>
-                <input asp-for="Currency" class="form-control" />
-                <span asp-validation-for="Currency" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="From" class="control-label"></label>
-                <input asp-for="From" class="form-control" />
-                <span asp-validation-for="From" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="To" class="control-label"></label>
-                <input asp-for="To" class="form-control" />
-                <span asp-validation-for="To" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DateFrom" class="control-label"></label>
-                <input asp-for="DateFrom" class="form-control" />
-                <span asp-validation-for="DateFrom" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DateTo" class="control-label"></label>
-                <input asp-for="DateTo" class="form-control" />
-                <span asp-validation-for="DateTo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+
+<div class="row" id="formContainer">
+    <div class="col-8">
+        <h1 class="display-4">Find Your Flight</h1>
+    </div>
+    <div class="card col-8 searchPanel">
+
+        <div class="card-body">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group form-floating">
+                    <div>
+                        <div class="form-floating">
+                            <label for="Way" class="control-label">Trip</label>
+                            <select asp-for="Way" class="form-control trip">
+                                <option value="0">One Way</option>
+                                <option value="1" selected="selected">Return</option>
+                            </select>
+                            <span asp-validation-for="Way" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating">
+                            <label for="Adults" class="control-label">Adults</label>
+                            <select asp-for="Adults" class="form-control  passangers">
+                            </select>
+                            <span asp-validation-for="Adults" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating">
+                            <label for="Children" class="control-label">Children</label>
+                            <select asp-for="Children" class="form-control  passangers">
+                            </select>
+                            <span asp-validation-for="Children" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating">
+                            <label for="Infant" class="control-label">Infant</label>
+                            <select asp-for="Infant" class="form-control  passangers">
+                            </select>
+                            <span asp-validation-for="Infant" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating">
+                            <label for="Class" class="control-label">Class</label>
+                            <select asp-for="Class" class="form-control class">
+                                <option value="1">Any</option>
+                                <option value="2" selected="selected">Economy</option>
+                                <option value="3">Premium Economy</option>
+                                <option value="4">Business</option>
+                                <option value="5">First Class</option>
+                            </select>
+                            <span asp-validation-for="Class" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating">
+                            <label for="Stopovers" class="control-label">Stopovers</label>
+                            <select asp-for="Stopovers" class="form-control stopovers">
+                                <option value="" selected="selected">Any</option>
+                                <option value="0">None</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="4">5</option>
+                            </select>
+                            <span asp-validation-for="Stopovers" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating">
+                            <label for="Currency" class="control-label">Currency</label>
+                            <select asp-for="Currency" class="form-control currency"><option value="AED">AED</option><option value="AMD">AMD</option><option value="AUD">AUD</option><option value="BHD">BHD</option><option value="BRL">BRL</option><option value="BYN">BYN</option><option value="CAD">CAD</option><option value="CHF">CHF</option><option value="CLP">CLP</option><option value="CNY">CNY</option><option value="CZK">CZK</option><option value="DKK">DKK</option><option value="EUR">EUR</option><option value="GBP" selected="selected">GBP</option><option value="HKD">HKD</option><option value="HUF">HUF</option><option value="IDR">IDR</option><option value="ILS">ILS</option><option value="INR">INR</option><option value="ISK">ISK</option><option value="JOD">JOD</option><option value="JPY">JPY</option><option value="KGS">KGS</option><option value="KRW">KRW</option><option value="KWD">KWD</option><option value="KZT">KZT</option><option value="MXN">MXN</option><option value="MYR">MYR</option><option value="NOK">NOK</option><option value="NZD">NZD</option><option value="OMR">OMR</option><option value="PEN">PEN</option><option value="PHP">PHP</option><option value="PLN">PLN</option><option value="QAR">QAR</option><option value="RON">RON</option><option value="RSD">RSD</option><option value="RUB">RUB</option><option value="SAR">SAR</option><option value="SEK">SEK</option><option value="SGD">SGD</option><option value="THB">THB</option><option value="TRY">TRY</option><option value="TWD">TWD</option><option value="USD">USD</option><option value="UZS">UZS</option><option value="YER">YER</option><option value="ZAR">ZAR</option></select>
+                            <span asp-validation-for="Currency" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-floating">
+                            <label for="From" class="control-label">From</label>
+                            <input list="locationsFrom" asp-for="From" class="form-control flightFrom" />
+                            <datalist id="locationsFrom">
+                            </datalist>
+                            <span asp-validation-for="From" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating">
+                            <label for="To" class="control-label">To</label>
+                            <input list="locationsTo" asp-for="To" class="form-control flightTo" />
+                            <datalist id="locationsTo">
+                            </datalist>
+                            <span asp-validation-for="To" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating">
+                            <label for="DateFrom" class="control-label">Depart</label>
+                            <input asp-for="DateFrom" class="form-control depart" min="@DateTime.Today.ToString("yyyy-MM-dd")" />
+                          
+                            <span asp-validation-for="DateFrom" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating">
+                            <label for="DateTo" class="control-label">Return</label>
+                            <input asp-for="DateTo" class="form-control return" />
+                            <span asp-validation-for="DateTo" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div id="searchButtonDiv">
+                        <input type="submit" value="Search flights" class="btn btn-warning search-button" />
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 <div class="text-center">
-    <h1 class="display-4">Find Your Flight</h1>
-    <h2 class="lead">Latest Searches</h2>
-    <div class="row row-cols-1 row-cols-md-3 g-4">
+
+    <h2 class="display-5">Recently Searched Flights</h2>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
         @{
             int countSearches = 0;
             SearchQuery newModel = new SearchQuery();
-           
+
         }
 
         @foreach (var item in ViewBag.SearchHistory)
@@ -93,8 +124,7 @@
                     <img src="@newModel.ImgAddress["photos"][0]["src"]["medium"]" class="card-img-top" alt="@item.To">
                     <div class="card-body">
                         <h5 class="card-title">
-                            From @item.From <br />
-                            To @item.To
+                            From @item.From To @item.To
                         </h5>
                         <p class="card-text">
                             <a href="#" class="btn btn-primary">View</a>
@@ -117,16 +147,16 @@
              */
 
 
-            if (countSearches == 2)
+            if (countSearches == 3)
             {
                 break;
             }
             countSearches += 1;
         }
     </div>
-
+  
 </div>
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }
 

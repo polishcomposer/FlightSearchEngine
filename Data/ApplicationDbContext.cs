@@ -14,6 +14,6 @@ namespace FlightSE.Data
         {
         }
         public DbSet<FlightSE.Models.SearchQuery> SearchQuery { get; set; }
-  
+        public DbSet<FlightSE.Models.Location> Location { get; set; }
     }
 }
