@@ -62,7 +62,7 @@
                                 <option value="4">4</option>
                                 <option value="4">5</option>
                             </select>
-                            <span asp-validation-for="Stopovers" class="text-danger"></span>
+                            <!-- <span asp-validation-for="Stopovers" class="text-danger"></span> -->
                         </div>
                         <div class="form-floating">
                             <label for="Currency" class="control-label">Currency</label>
@@ -75,27 +75,30 @@
                             <label for="From" class="control-label">From</label>
                             <input list="locationsFrom" asp-for="From" class="form-control flightFrom" />
                             <div id="FromSuggestions"></div>
-                            <span asp-validation-for="From" class="text-danger"></span>
+                        
                         </div>
                         <div class="form-floating">
                             <label for="To" class="control-label">To</label>
                             <input list="locationsTo" asp-for="To" class="form-control flightTo" />
                             <div id="ToSuggestions"></div>
-                            <span asp-validation-for="To" class="text-danger"></span>
+                            
                         </div>
                         <div class="form-floating">
                             <label for="DateFrom" class="control-label">Depart</label>
-                            <input asp-for="DateFrom" class="form-control depart" min="@DateTime.Today.ToString("yyyy-MM-dd")" />
+                            <input asp-for="DateFrom" class="form-control depart" />
                           
-                            <span asp-validation-for="DateFrom" class="text-danger"></span>
+                            
                         </div>
                         <div class="form-floating">
                             <label for="DateTo" class="control-label">Return</label>
-                            <input asp-for="DateTo" class="form-control return" />
-                            <span asp-validation-for="DateTo" class="text-danger"></span>
+                            <input asp-for="DateTo" class="form-control return" required />
+                            
                         </div>
                     </div>
                     <div id="searchButtonDiv">
+                        <span asp-validation-for="From" class="flightValidation"></span>
+                        <span asp-validation-for="To" class="flightValidation"></span>
+                        <span asp-validation-for="DateFrom" class="flightValidation"></span>
                         <input type="submit" value="Search flights" class="btn btn-warning search-button" />
                     </div>
                 </div>
@@ -158,3 +161,11 @@
         @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     }
 
+<div class="sk-chase">
+    <div class="sk-chase-dot"></div>
+    <div class="sk-chase-dot"></div>
+    <div class="sk-chase-dot"></div>
+    <div class="sk-chase-dot"></div>
+    <div class="sk-chase-dot"></div>
+    <div class="sk-chase-dot"></div>
+</div>

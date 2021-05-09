@@ -3,13 +3,39 @@
 
 // Write your JavaScript code.
 let passangers = 1;
+let dateDeparture;
+let dateReturn;
+let oldReturn;
 $(document).ready(function () {
+    
+    let today = new Date().toISOString().slice(0, 10);
+    let newDate = new Date();
+    newDate.setDate(newDate.getDate() + 1);
+    let tomorrow = newDate.toISOString().slice(0, 10);
+    $("#DateFrom").attr({ "min": today });
+    $("#DateTo").attr({ "min": tomorrow });
+
+    $("#DateFrom").change(function () {
+        oldReturn = new Date($("#DateTo").val());
+        dateReturn = new Date($(this).val());
+        dateReturn.setDate(dateReturn.getDate() + 1);
+          
+            dateDeparture = new Date($("#DateFrom").val());
+        if (dateDeparture > oldReturn) {
+                $("#DateTo").val("");
+            }
+            $("#DateTo").attr({ "min": dateReturn.toISOString().slice(0, 10) });
+        
+    });
+    
     $("#Way").on("change", function () {
         if ($(this).val() == 0) {
             $("#DateTo").attr("disabled", true);
             $("#DateTo").val("");
+            $("input").prop('required', false);
         } else {
             $("#DateTo").attr("disabled", false);
+            $("input").prop('required', true);
         } 
     });
     calculatePassangers();
@@ -97,6 +123,6 @@ $(document).ready(function () {
             }
         });
     });
-
+    
 
 });

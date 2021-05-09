@@ -34,11 +34,11 @@ namespace FlightSE.Models
         public string From { get; set; }
         [Required]
         public string To { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Depart field is required.")]
         [DataType(DataType.Date)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime DateFrom { get; set; }
-        [Required]
+        
         [DataType(DataType.Date)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime DateTo { get; set; }
