@@ -3,6 +3,7 @@ using FlightSE.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -22,7 +23,11 @@ namespace FlightSE.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly ApplicationDbContext _context;
 
-        
+        public JsonResult GetLocations(string Name)
+        {
+            var json = JsonConvert.SerializeObject(_context.Location.Where(p => p.AirportLocation.Contains(Name)).ToList().Take(10));
+            return Json(json);
+        }
         public void GetData()
         {
             var url = "https://tequila-api.kiwi.com/v2/search?fly_from=FRA&fly_to=PRG&date_from=04%2F05%2F2021&date_to=12%2F05%2F2021&nights_in_dst_from=2&nights_in_dst_to=3&max_fly_duration=20&flight_type=round&one_for_city=0&one_per_date=0&adults=2&children=2&selected_cabins=C&mix_with_cabins=M&adult_hold_bag=1%2C0&adult_hand_bag=1%2C1&child_hold_bag=2%2C1&child_hand_bag=1%2C1&only_working_days=false&only_weekends=false&partner_market=us&max_stopovers=2&max_sector_stopovers=2&vehicle_type=aircraft&limit=500";

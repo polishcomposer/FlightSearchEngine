@@ -74,15 +74,13 @@
                         <div class="form-floating">
                             <label for="From" class="control-label">From</label>
                             <input list="locationsFrom" asp-for="From" class="form-control flightFrom" />
-                            <datalist id="locationsFrom">
-                            </datalist>
+                            <div id="FromSuggestions"></div>
                             <span asp-validation-for="From" class="text-danger"></span>
                         </div>
                         <div class="form-floating">
                             <label for="To" class="control-label">To</label>
                             <input list="locationsTo" asp-for="To" class="form-control flightTo" />
-                            <datalist id="locationsTo">
-                            </datalist>
+                            <div id="ToSuggestions"></div>
                             <span asp-validation-for="To" class="text-danger"></span>
                         </div>
                         <div class="form-floating">

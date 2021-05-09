@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using FlightSE.Data;
 using FlightSE.Models;
+using Newtonsoft.Json.Linq;
+using Nancy.Json;
+using Newtonsoft.Json;
 
 namespace FlightSE.Views.Locations
 {
@@ -18,10 +21,50 @@ namespace FlightSE.Views.Locations
         {
             _context = context;
         }
+        private JObject locations { get; set; }
+        public List<Airport> GetAirports()
+        {
+            string jsonString = System.IO.File.ReadAllText(@"../FlightSE/wwwroot/js/airports.json");
+            JavaScriptSerializer ser = new JavaScriptSerializer();
+            var records = ser.Deserialize<List<Airport>>(jsonString);
+            return records;
+        }
+        public IActionResult Test()
+        {
+            var Airports = GetAirports();
+            string AirportCity = "";
+            string AirportCountry = "";
+            string AirportAll = "";
 
+            foreach (Airport element in Airports)
+            {
+                AirportCity = element.city;
+                AirportCountry = element.country;
+                AirportAll = element.name + " (" + element.code + ") " + element.city;
+
+                if (!_context.Location.Any(p => p.AirportLocation == AirportCity))
+                {
+                    _context.Add(new Location { AirportLocation = AirportCity });
+                    _context.SaveChanges();
+                }
+                if (!_context.Location.Any(p => p.AirportLocation == AirportCountry))
+                {
+                    _context.Add(new Location { AirportLocation = AirportCountry });
+                    _context.SaveChanges();
+                }
+                if (!_context.Location.Any(p => p.AirportLocation == AirportAll))
+                {
+                    _context.Add(new Location { AirportLocation = AirportAll });
+                    _context.SaveChanges();
+                }
+
+            }
+            return RedirectToAction(nameof(Index));
+        }
         // GET: Locations
         public async Task<IActionResult> Index()
         {
+
             return View(await _context.Location.ToListAsync());
         }
 
@@ -42,6 +85,8 @@ namespace FlightSE.Views.Locations
 
             return View(location);
         }
+
+   
 
         // GET: Locations/Create
         public IActionResult Create()

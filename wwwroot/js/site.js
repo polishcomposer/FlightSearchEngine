@@ -49,13 +49,54 @@ $(document).ready(function () {
         calculatePassangers($("#Adults").val(), $("#Children").val(), $("#Infant").val());
     });
 
-  /*  $("#From").on("keyup change", function () {
-        let suggestionsFrom = "";
-        for(let sugFrom = 0; sugFrom< 10; sugFrom++) {
-        suggestionsFrom += `<option value="${}">`;
-    }
-        $("#locationsFrom").html(suggestionsFrom);
+    $("#From").on("keyup", function () {
+        $.ajax({
+            url: "/Home/GetLocations",
+            method: "GET",
+            data: { Name: $(this).val() },
+            dataType: "json",
+            success: function (data) {
+                let suggestions = `<datalist id="locationsFrom">`;
+                let airports = JSON.parse(data);
+
+                for (let a = 0; a < 10; a++) {
+                    suggestions += `<option value="${airports[a]["AirportLocation"]}">`;
+                }
+                suggestions += `</datalist>`;
+                $("#FromSuggestions").html(suggestions);
+            
+            },
+            error: function (err) {
+                conssole.log(err);
+            }
+        });
+       
     });
-    */
+
+
+
+    $("#To").on("keyup", function () {
+        $.ajax({
+            url: "/Home/GetLocations",
+            method: "GET",
+            data: { Name: $(this).val() },
+            dataType: "json",
+            success: function (data) {
+                let suggestions = `<datalist id="locationsTo">`;
+                let airports = JSON.parse(data);
+
+                for (let a = 0; a < 10; a++) {
+                    suggestions += `<option value="${airports[a]["AirportLocation"]}">`;
+                }
+                suggestions += `</datalist>`;
+                $("#ToSuggestions").html(suggestions);
+             
+            },
+            error: function (err) {
+                conssole.log(err);
+            }
+        });
+    });
+
 
 });

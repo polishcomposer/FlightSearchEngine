@@ -8,6 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Data\Migrations\20210509011346_LocationUpdate.cs" />
+    <Compile Remove="Data\Migrations\20210509011346_LocationUpdate.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.12" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.13" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.13" />
@@ -19,6 +24,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration" Version="3.1.5" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGenerators.Mvc" Version="3.1.5" />
+    <PackageReference Include="Nancy" Version="2.0.0" />
     <PackageReference Include="SendGrid" Version="9.23.0" />
   </ItemGroup>
 
