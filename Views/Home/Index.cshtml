@@ -10,15 +10,15 @@
     <div class="card col-8 searchPanel">
 
         <div class="card-body">
-            <form asp-action="Create">
+            <form onsubmit="return false" id="submitSearch">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group form-floating">
                     <div>
                         <div class="form-floating">
                             <label for="Way" class="control-label">Trip</label>
                             <select asp-for="Way" class="form-control trip">
-                                <option value="0">One Way</option>
-                                <option value="1" selected="selected">Return</option>
+                                <option value="oneway">One Way</option>
+                                <option value="round" selected="selected">Return</option>
                             </select>
                             <span asp-validation-for="Way" class="text-danger"></span>
                         </div>
@@ -43,18 +43,18 @@
                         <div class="form-floating">
                             <label for="Class" class="control-label">Class</label>
                             <select asp-for="Class" class="form-control class">
-                                <option value="1">Any</option>
-                                <option value="2" selected="selected">Economy</option>
-                                <option value="3">Premium Economy</option>
-                                <option value="4">Business</option>
-                                <option value="5">First Class</option>
+                                <option value="">Any</option>
+                                <option value="M" selected="selected">Economy</option>
+                                <option value="W">Premium Economy</option>
+                                <option value="C">Business</option>
+                                <option value="F">First Class</option>
                             </select>
                             <span asp-validation-for="Class" class="text-danger"></span>
                         </div>
                         <div class="form-floating">
                             <label for="Stopovers" class="control-label">Stopovers</label>
                             <select asp-for="Stopovers" class="form-control stopovers">
-                                <option value="" selected="selected">Any</option>
+                                <option value="6" selected="selected">Any</option>
                                 <option value="0">None</option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
@@ -75,38 +75,45 @@
                             <label for="From" class="control-label">From</label>
                             <input list="locationsFrom" asp-for="From" class="form-control flightFrom" />
                             <div id="FromSuggestions"></div>
-                        
+
                         </div>
                         <div class="form-floating">
                             <label for="To" class="control-label">To</label>
                             <input list="locationsTo" asp-for="To" class="form-control flightTo" />
                             <div id="ToSuggestions"></div>
-                            
+
                         </div>
                         <div class="form-floating">
                             <label for="DateFrom" class="control-label">Depart</label>
                             <input asp-for="DateFrom" class="form-control depart" />
-                          
-                            
+
+
                         </div>
                         <div class="form-floating">
                             <label for="DateTo" class="control-label">Return</label>
                             <input asp-for="DateTo" class="form-control return" required />
-                            
+
                         </div>
                     </div>
                     <div id="searchButtonDiv">
                         <span asp-validation-for="From" class="flightValidation"></span>
                         <span asp-validation-for="To" class="flightValidation"></span>
                         <span asp-validation-for="DateFrom" class="flightValidation"></span>
-                        <input type="submit" value="Search flights" class="btn btn-warning search-button" />
+                        <input type="submit" value="Search flights" class="btn btn-warning search-button"  />
                     </div>
                 </div>
             </form>
         </div>
     </div>
 </div>
+<div id="runSearch"></div>
+
+
+
 <div class="text-center">
+
+
+
 
     <h2 class="display-5">Recently Searched Flights</h2>
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
@@ -155,17 +162,9 @@
             countSearches += 1;
         }
     </div>
-  
-</div>
-    @section Scripts {
-        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    }
 
-<div class="sk-chase">
-    <div class="sk-chase-dot"></div>
-    <div class="sk-chase-dot"></div>
-    <div class="sk-chase-dot"></div>
-    <div class="sk-chase-dot"></div>
-    <div class="sk-chase-dot"></div>
-    <div class="sk-chase-dot"></div>
 </div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

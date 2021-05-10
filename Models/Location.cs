@@ -10,6 +10,7 @@ namespace FlightSE.Models
     {
         [Key]
         public int ID { get; set; }
+        public string Code { get; set; }
         public string AirportLocation { get; set; }
     }
 }

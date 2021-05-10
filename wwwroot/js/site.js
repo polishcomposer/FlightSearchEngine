@@ -29,7 +29,7 @@ $(document).ready(function () {
     });
     
     $("#Way").on("change", function () {
-        if ($(this).val() == 0) {
+        if ($(this).val() == "oneway") {
             $("#DateTo").attr("disabled", true);
             $("#DateTo").val("");
             $("input").prop('required', false);
@@ -108,21 +108,38 @@ $(document).ready(function () {
             data: { Name: $(this).val() },
             dataType: "json",
             success: function (data) {
-                let suggestions = `<datalist id="locationsTo">`;
+                let suggestions = `<datalist id="locationsFrom">`;
                 let airports = JSON.parse(data);
 
                 for (let a = 0; a < 10; a++) {
                     suggestions += `<option value="${airports[a]["AirportLocation"]}">`;
                 }
                 suggestions += `</datalist>`;
-                $("#ToSuggestions").html(suggestions);
-             
+                $("#FromSuggestions").html(suggestions);
+
             },
             error: function (err) {
                 conssole.log(err);
             }
         });
     });
-    
+    $("#submitSearch").submit(function () {
+            if ($(this).valid()) {
 
+                $("#runSearch").html(`<div class="card col-8 searchResults">
+    <div class="card-body" id="results">
+<div class="sk-chase">
+    <div class="sk-chase-dot"></div>
+    <div class="sk-chase-dot"></div>
+    <div class="sk-chase-dot"></div>
+    <div class="sk-chase-dot"></div>
+    <div class="sk-chase-dot"></div>
+    <div class="sk-chase-dot"></div>
+</div>
+    </div>
+</div>`);
+
+            }
+    });
+   
 });

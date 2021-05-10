@@ -29,34 +29,62 @@ namespace FlightSE.Views.Locations
             var records = ser.Deserialize<List<Airport>>(jsonString);
             return records;
         }
+        public List<Country> GetCountries()
+        {
+            string jsonString = System.IO.File.ReadAllText(@"../FlightSE/wwwroot/js/countries.json");
+            JavaScriptSerializer ser = new JavaScriptSerializer();
+            var records = ser.Deserialize<List<Country>>(jsonString);
+            return records;
+        }
+        public List<Root> GetCities()
+        {
+            string jsonString = System.IO.File.ReadAllText(@"../FlightSE/wwwroot/js/cities.json");
+            JavaScriptSerializer ser = new JavaScriptSerializer();
+            var records = ser.Deserialize<List<Root>>(jsonString);
+            return records;
+        }
         public IActionResult Test()
         {
-            var Airports = GetAirports();
-            string AirportCity = "";
-            string AirportCountry = "";
-            string AirportAll = "";
+            var Cities = GetCities();
 
-            foreach (Airport element in Airports)
+            // string AirportAll = "";
+            
+            foreach (Root element in Cities)
             {
-                AirportCity = element.city;
-                AirportCountry = element.country;
-                AirportAll = element.name + " (" + element.code + ") " + element.city;
 
-                if (!_context.Location.Any(p => p.AirportLocation == AirportCity))
+
+                //  AirportAll = element.name + " (" + element.code + ") " + element.city;
+
+                /*    if (!_context.Location.Any(p => p.AirportLocation == element.code))
                 {
-                    _context.Add(new Location { AirportLocation = AirportCity });
+                    _context.Add(new Location { 
+                        AirportLocation = element.code,
+                        Code = element.code
+                    });
                     _context.SaveChanges();
                 }
-                if (!_context.Location.Any(p => p.AirportLocation == AirportCountry))
+
+          if (!_context.Location.Any(p => p.AirportLocation == element.name))
+              {
+                  _context.Add(new Location
+                  {
+                      AirportLocation = element.name,
+                      Code = element.code
+                  });
+                  _context.SaveChanges();
+              }
+
+              */
+                if (!_context.Location.Any(p => p.AirportLocation == element.name))
                 {
-                    _context.Add(new Location { AirportLocation = AirportCountry });
+                    _context.Add(new Location
+                    {
+                        AirportLocation = element.name,
+                        Code = element.code
+                    });
                     _context.SaveChanges();
                 }
-                if (!_context.Location.Any(p => p.AirportLocation == AirportAll))
-                {
-                    _context.Add(new Location { AirportLocation = AirportAll });
-                    _context.SaveChanges();
-                }
+
 
             }
             return RedirectToAction(nameof(Index));

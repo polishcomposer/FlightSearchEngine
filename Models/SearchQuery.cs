@@ -16,8 +16,7 @@ namespace FlightSE.Models
         [Key]
         public int ID { get; set; }
         public string UserID { get; set; }
-        [Range(0,1)]
-        public int Way { get; set; }
+        public string Way { get; set; }
         [Required]
         [Range(1,9)]
         public int Adults { get; set; }
@@ -25,7 +24,6 @@ namespace FlightSE.Models
         public int Children { get; set; }
         [Range(0, 4)]
         public int Infant { get; set; }
-        [Required]
         public string Class { get; set; }
         public int Stopovers { get; set; }
         [Required]
