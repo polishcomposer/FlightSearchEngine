@@ -76,57 +76,60 @@ $(document).ready(function () {
     });
 
     $("#From").on("keyup", function () {
-        $.ajax({
-            url: "/Home/GetLocations",
-            method: "GET",
-            data: { Name: $(this).val() },
-            dataType: "json",
-            success: function (data) {
-                let suggestions = `<datalist id="locationsFrom">`;
-                let airports = JSON.parse(data);
-
-                for (let a = 0; a < 10; a++) {
-                    suggestions += `<option value="${airports[a]["AirportLocation"]}">`;
+      
+            $.ajax({
+                url: "/Home/GetLocations",
+                method: "GET",
+                data: { Name: $(this).val() },
+                dataType: "json",
+                success: function (data) {
+                    let airports = JSON.parse(data);
+                    if(airports.length != 0) {
+                        let suggestions = `<datalist id="locationsFrom">`;
+                        for (let a = 0; a < 10; a++) {
+                            suggestions += `<option value="${airports[a]["AirportLocation"]}">`;
+                        }
+                        suggestions += `</datalist>`;
+                        $("#FromSuggestions").html(suggestions);
+                    }
+                },
+                error: function (err) {
+                    console.log(err);
                 }
-                suggestions += `</datalist>`;
-                $("#FromSuggestions").html(suggestions);
-            
-            },
-            error: function (err) {
-                conssole.log(err);
-            }
-        });
-       
+            });
+        
     });
 
 
 
     $("#To").on("keyup", function () {
-        $.ajax({
-            url: "/Home/GetLocations",
-            method: "GET",
-            data: { Name: $(this).val() },
-            dataType: "json",
-            success: function (data) {
-                let suggestions = `<datalist id="locationsFrom">`;
-                let airports = JSON.parse(data);
-
-                for (let a = 0; a < 10; a++) {
-                    suggestions += `<option value="${airports[a]["AirportLocation"]}">`;
+        
+            $.ajax({
+                url: "/Home/GetLocations",
+                method: "GET",
+                data: { Name: $(this).val() },
+                dataType: "json",
+                success: function (data2) {
+                    let airports2 = JSON.parse(data2);
+                    if(airports2.length != 0) {
+                        let suggestions2 = `<datalist id="locationsTo">`;
+                        for (let b = 0; b < 10; b++) {
+                            suggestions2 += `<option value="${airports2[b]["AirportLocation"]}">`;
+                        }
+                        suggestions2 += `</datalist>`;
+                        $("#ToSuggestions").html(suggestions2);
+                    }
+                },
+                error: function (err) {
+                    console.log(err);
                 }
-                suggestions += `</datalist>`;
-                $("#FromSuggestions").html(suggestions);
-
-            },
-            error: function (err) {
-                conssole.log(err);
-            }
-        });
+            });
+        
+      
     });
     $("#submitSearch").submit(function () {
-            if ($(this).valid()) {
-
-                $("#runSearch").html(`<div class="card col-8 searchResults">
+        if ($(this).valid()) {
+            $("#runSearch").html(`<div class="card col-8 searchResults">
     <div class="card-body" id="results">
 <div class="sk-chase">
     <div class="sk-chase-dot"></div>
@@ -138,8 +141,55 @@ $(document).ready(function () {
 </div>
     </div>
 </div>`);
-
+            function Reformat(myDate) {
+                let newDateFormat = myDate.substr(myDate.length - 2, 2) + "/" + myDate.substr(5, 2) + "/" + myDate.substr(0, 4);
+                return newDateFormat;
             }
+            let passDateFrom = Reformat($("#DateFrom").val());
+            let passDateTo = Reformat($("#DateTo").val());
+        $.ajax({
+            url: "/Home/GetFlights",
+            method: "GET",
+            data: {
+                Way: $("#Way").val(),
+                Adults: $("#Adults").val(),
+                Children: $("#Children").val(),
+                Infant: $("#Infant").val(),
+                Class: $("#Class").val(),
+                Stopovers: $("#Stopovers").val(),
+                Currency: $("#Currency").val(),
+                From: $("#From").val(),
+                To: $("#To").val(),
+                DateFrom: passDateFrom,
+                DateTo: passDateTo
+            },
+            dataType: "json",
+            success: function (foundFlights) {
+                let userFlights = JSON.parse(foundFlights);
+                console.log(userFlights);
+                if (userFlights["data"].length > 0) {
+                    $("#runSearch").html(`<div class="card col-8 searchResults">
+    <div class="card-body" id="results">
+${userFlights}
+    </div>
+</div>`);
+                } else {
+                    $("#runSearch").html(`<div class="card col-8 searchResults">
+    <div class="card-body" id="results">
+No flights have been found based on the information provided.
+    </div>
+</div>`);
+                }
+            },
+            error: function (err) {
+                console.log(err);
+                $("#runSearch").html(`<div class="card col-8 searchResults">
+    <div class="card-body" id="results">
+No flights have been found based on the information provided.
+    </div>
+</div>`);
+            }});
+        }
     });
-   
+
 });

@@ -29,21 +29,56 @@ namespace FlightSE.Controllers
             return Json(json);
         }
         
-        public JsonResult GetFlights()
+        public JsonResult GetFlights(string Way, int Adults, int Children, int Infant, string Class, int? Stopovers, string Currency, string From, string To, string DateFrom, string DateTo)
         {
-            var url = "https://tequila-api.kiwi.com/v2/search?fly_from=LON&fly_to=PAR&date_from=20%2F05%2F2021&date_to=20%2F05%2F2021&return_from=01%2F06%2F2021&return_to=01%2F06%2F2021&flight_type=round&adults=1&children=1&infants=1&selected_cabins=C&only_working_days=false&only_weekends=false&partner_market=gb&max_stopovers=2&vehicle_type=aircraft&sort=price&limit=100";
+            string DateReturn = "";
+            string DateReturnTo = "";
+            string Cabin = "";
+            string TotalStops = "";
+            string Start = "";
+            string Finish = "";
+            var LocationFrom = _context.Location.Where(p => p.AirportLocation == From).FirstOrDefault(); ;
+            if (LocationFrom!=null) {
+                Start = LocationFrom.Code;
+            } else
+            {
+                Start = From;
+            }
+            var LocationTo = _context.Location.Where(p => p.AirportLocation == From).FirstOrDefault(); ;
+            if (LocationTo != null)
+            {
+                Finish = LocationTo.Code;
+            } else
+            {
+                Finish = To;
+            }
+            if (Class!="X")
+            {
+                Cabin = $"&selected_cabins={Class}";
+            }
+            if (Stopovers != 6)
+            {
+                TotalStops = $"&max_stopovers={Stopovers}";
+            }
+
+            if (Way=="return")
+            {
+                DateReturn = $"&return_from={DateTo}";
+                DateReturnTo = $"&return_to={DateTo}";
+            }
+            var url = $"https://tequila-api.kiwi.com/v2/search?fly_from={Start}&fly_to={Finish}&date_from={DateFrom}&date_to={DateFrom}{DateReturn}{DateReturnTo}&flight_type={Way}&adults={Adults}&children={Children}&infants={Infant}{Cabin}&only_working_days=false&only_weekends=false&partner_market=gb&curr={Currency}&locale=en{TotalStops}&vehicle_type=aircraft&limit=20";
 
             var httpRequest = (HttpWebRequest)WebRequest.Create(url);
 
             httpRequest.Headers["accept"] = "application/json";
             httpRequest.Headers["apikey"] = "DrPUBQjqS8nnOs7MJedRIL5uuY_SXXvr";
-
-
             var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
+           
+            
             using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
             {
                 var stringResponse = streamReader.ReadToEnd();
-                return Json(JObject.Parse(stringResponse));
+                return Json(stringResponse);
             }
 
         }
