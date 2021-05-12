@@ -23,6 +23,11 @@ namespace FlightSE.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly ApplicationDbContext _context;
 
+        public JsonResult GetLocationFrom(string From)
+        {
+            var json = JsonConvert.SerializeObject(_context.Location.Single(p => p.AirportLocation == From));
+            return Json(json);
+        }
         public JsonResult GetLocations(string Name)
         {
             var json = JsonConvert.SerializeObject(_context.Location.Where(p => p.AirportLocation.Contains(Name)).ToList().Take(10));
@@ -37,14 +42,16 @@ namespace FlightSE.Controllers
             string TotalStops = "";
             string Start = "";
             string Finish = "";
-            var LocationFrom = _context.Location.Where(p => p.AirportLocation == From).FirstOrDefault(); ;
-            if (LocationFrom!=null) {
+            var LocationFrom = _context.Location.Single(p => p.AirportLocation == From);
+            if (LocationFrom != null) {
                 Start = LocationFrom.Code;
+           
             } else
             {
                 Start = From;
+          
             }
-            var LocationTo = _context.Location.Where(p => p.AirportLocation == From).FirstOrDefault(); ;
+            var LocationTo = _context.Location.Single(p => p.AirportLocation == To);
             if (LocationTo != null)
             {
                 Finish = LocationTo.Code;

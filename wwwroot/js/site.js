@@ -76,13 +76,41 @@ $(document).ready(function () {
     });
 
     $("#From").on("keyup", function () {
+        /*  let locationFrom = $(this).val();
+        $.ajax({
+            url: "/Home/GetLocationFrom",
+            method: "GET",
+            data: { From: locationFrom },
+            dataType: "json",
+            success: function (data) {
+              
+                let airports = JSON.parse(data);
+                let codes = "";
+                for (let a = 0; a < 10; a++) {
+                    codes += airports[a]["Code"] + "<br />";
+                }
+                $("#runSearch").html(`<div class="card col-8 searchResults">
+    <div class="card-body" id="results">
+${locationFrom}<br />
+${codes}
+    </div>
+</div>`); 
+                console.log(data);
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });*/
+
+
       
-            $.ajax({
+          $.ajax({
                 url: "/Home/GetLocations",
                 method: "GET",
                 data: { Name: $(this).val() },
                 dataType: "json",
                 success: function (data) {
+
                     let airports = JSON.parse(data);
                     if(airports.length != 0) {
                         let suggestions = `<datalist id="locationsFrom">`;
@@ -92,11 +120,12 @@ $(document).ready(function () {
                         suggestions += `</datalist>`;
                         $("#FromSuggestions").html(suggestions);
                     }
+
                 },
                 error: function (err) {
                     console.log(err);
                 }
-            });
+            }); 
         
     });
 
@@ -142,11 +171,13 @@ $(document).ready(function () {
     </div>
 </div>`);
             function Reformat(myDate) {
-                let newDateFormat = myDate.substr(myDate.length - 2, 2) + "/" + myDate.substr(5, 2) + "/" + myDate.substr(0, 4);
+                let newDateFormat = myDate.substr(myDate.length-2, 2) + "/" + myDate.substr(5, 2) + "/" + myDate.substr(0, 4);
                 return newDateFormat;
             }
             let passDateFrom = Reformat($("#DateFrom").val());
             let passDateTo = Reformat($("#DateTo").val());
+            console.log($("#From").val());
+            console.log($("#To").val())
         $.ajax({
             url: "/Home/GetFlights",
             method: "GET",
