@@ -7,7 +7,7 @@ let dateDeparture;
 let dateReturn;
 let oldReturn;
 $(document).ready(function () {
-    
+ 
     let today = new Date().toISOString().slice(0, 10);
     let newDate = new Date();
     newDate.setDate(newDate.getDate() + 1);
@@ -74,88 +74,88 @@ $(document).ready(function () {
     $("#Infant").on("change", function () {
         calculatePassangers($("#Adults").val(), $("#Children").val(), $("#Infant").val());
     });
-
+    let locationFromQuery = "";
+    let locationToQuery = "";
     $("#From").on("keyup", function () {
-        /*  let locationFrom = $(this).val();
-        $.ajax({
-            url: "/Home/GetLocationFrom",
-            method: "GET",
-            data: { From: locationFrom },
-            dataType: "json",
-            success: function (data) {
-              
-                let airports = JSON.parse(data);
-                let codes = "";
-                for (let a = 0; a < 10; a++) {
-                    codes += airports[a]["Code"] + "<br />";
-                }
-                $("#runSearch").html(`<div class="card col-8 searchResults">
-    <div class="card-body" id="results">
-${locationFrom}<br />
-${codes}
-    </div>
-</div>`); 
-                console.log(data);
+          let locationFrom = $(this).val();
+      
+                    $.ajax({
+                          url: "/Home/GetLocations",
+                          method: "GET",
+                        data: { Name: locationFrom },
+                          dataType: "json",
+                          success: function (data) {
+                              let airports = JSON.parse(data);
+                              if (Object.keys(airports).length > 0) {
+                                  let suggestions = `<datalist id="locationsFrom">`;
+                                  for (let a = 0; a < Object.keys(airports).length; a++) {
+                                      suggestions += `<option value="${airports[a]["AirportLocation"]}">`;
+                                  }
+                                  suggestions += `</datalist>`;
+                                  $("#FromSuggestions").html(suggestions);
+                              }
+
+                              $.ajax({
+                                  url: "/Home/GetLocationFrom",
+                                  method: "GET",
+                                  data: { From: locationFrom },
+                                  dataType: "json",
+                                  success: function (respondFromCode) {
+                                      let respondFQ = JSON.parse(respondFromCode);
+                                      locationFromQuery = respondFQ["Code"];
+
+                          },
+                          error: function (err) {
+                              console.log(err);
+                          }
+                      }); 
             },
             error: function (err) {
                 console.log(err);
             }
-        });*/
-
-
-      
-          $.ajax({
-                url: "/Home/GetLocations",
-                method: "GET",
-                data: { Name: $(this).val() },
-                dataType: "json",
-                success: function (data) {
-
-                    let airports = JSON.parse(data);
-                    if(airports.length != 0) {
-                        let suggestions = `<datalist id="locationsFrom">`;
-                        for (let a = 0; a < 10; a++) {
-                            suggestions += `<option value="${airports[a]["AirportLocation"]}">`;
-                        }
-                        suggestions += `</datalist>`;
-                        $("#FromSuggestions").html(suggestions);
-                    }
-
-                },
-                error: function (err) {
-                    console.log(err);
-                }
-            }); 
-        
+        });
     });
-
-
 
     $("#To").on("keyup", function () {
-        
-            $.ajax({
-                url: "/Home/GetLocations",
-                method: "GET",
-                data: { Name: $(this).val() },
-                dataType: "json",
-                success: function (data2) {
-                    let airports2 = JSON.parse(data2);
-                    if(airports2.length != 0) {
-                        let suggestions2 = `<datalist id="locationsTo">`;
-                        for (let b = 0; b < 10; b++) {
-                            suggestions2 += `<option value="${airports2[b]["AirportLocation"]}">`;
+        let locationTo = $(this).val();
+
+                $.ajax({
+                    url: "/Home/GetLocationsDestination",
+                    method: "GET",
+                    data: { Name: locationTo },
+                    dataType: "json",
+                    success: function (data2) {
+                        let airports2 = JSON.parse(data2);
+                        if (Object.keys(airports2).length > 0) {
+                            let suggestions2 = `<datalist id="locationsTo">`;
+                            for (let b = 0; b < Object.keys(airports2).length; b++) {
+                                suggestions2 += `<option value="${airports2[b].AirportLocation}">`;
+                            }
+                            suggestions2 += `</datalist>`;
+                            $("#ToSuggestions").html(suggestions2);
                         }
-                        suggestions2 += `</datalist>`;
-                        $("#ToSuggestions").html(suggestions2);
+
+                        $.ajax({
+                            url: "/Home/GetLocationTo",
+                            method: "GET",
+                            data: { To: locationTo },
+                            dataType: "json",
+                            success: function (respondToCode) {
+                                let respondTQ = JSON.parse(respondToCode);
+                                locationToQuery = respondTQ["Code"];
+
+                    },
+                    error: function (err) {
+                        console.log(err);
                     }
-                },
-                error: function (err) {
-                    console.log(err);
-                }
-            });
-        
-      
+                });
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
     });
+    
     $("#submitSearch").submit(function () {
         if ($(this).valid()) {
             $("#runSearch").html(`<div class="card col-8 searchResults">
@@ -176,9 +176,27 @@ ${codes}
             }
             let passDateFrom = Reformat($("#DateFrom").val());
             let passDateTo = Reformat($("#DateTo").val());
-            console.log($("#From").val());
-            console.log($("#To").val())
-        $.ajax({
+
+
+            function convertSeconds(seconds) {
+                var day, hour, minute
+                minute = Math.floor(seconds / 60);
+                hour = Math.floor(minute / 60);
+                day = Math.floor(hour / 24);
+                seconds = seconds % 60;
+                minute = minute % 60;
+                hour = hour % 24;
+                if (day != 0) {
+                    return day + "d " + hour + "h " + minute + "m";
+                } else {
+                    return hour + "h " + minute + "m";
+                }
+            
+            }
+
+
+
+            $.ajax({
             url: "/Home/GetFlights",
             method: "GET",
             data: {
@@ -189,21 +207,85 @@ ${codes}
                 Class: $("#Class").val(),
                 Stopovers: $("#Stopovers").val(),
                 Currency: $("#Currency").val(),
-                From: $("#From").val(),
-                To: $("#To").val(),
+                From: locationFromQuery,
+                To: locationToQuery,
                 DateFrom: passDateFrom,
                 DateTo: passDateTo
             },
             dataType: "json",
             success: function (foundFlights) {
                 let userFlights = JSON.parse(foundFlights);
-                console.log(userFlights);
-                if (userFlights["data"].length > 0) {
-                    $("#runSearch").html(`<div class="card col-8 searchResults">
-    <div class="card-body" id="results">
-${userFlights}
-    </div>
-</div>`);
+                let allFlights = userFlights["data"];
+                if (allFlights.length > 0) {
+                    console.log(allFlights);
+                    let stringWithResults = `<div class="card col-8 searchResults">
+    <div class="card-body" id="results">`;
+                    let departureTime = ""; 
+                    let arrivalTime = ""; 
+                    let timeFrom = "";
+                    let timeTo = ""; 
+                    let dateFromA = "";
+                    let dateFromB = "";
+                    let dateToA = ""; 
+                    let dateToB = "";
+                    let firstDay = "";
+                    let secondDay = "";
+                    let newDay = "";
+                    let stops = "";
+                    let milliseconds = 0;
+                    for (let c = 0; c < allFlights.length; c++) {
+                        departureTime = allFlights[c].local_departure;
+                        arrivalTime = allFlights[c].local_arrival;
+                        timeFrom = departureTime.substring(11, 16);
+                        timeTo = arrivalTime.substring(11, 16);
+                        dateFromA = departureTime.substring(8, 10);
+                        dateFromB = departureTime.substring(5, 7);
+                        dateToA = arrivalTime.substring(8, 10);
+                        dateToB = arrivalTime.substring(5, 7);
+
+                        firstDay = departureTime.substring(0, 10);
+                        secondDay = arrivalTime.substring(0, 10);
+                        milliseconds = allFlights[c].duration.total;
+
+                        const date1 = new Date(firstDay);
+                        const date2 = new Date(secondDay);
+                        const diffTime = Math.abs(date2 - date1);
+                        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                        if (diffTime != 0) {
+                            newDay = "+" + diffDays;
+                        }
+
+                        if (allFlights[c].route.length > 1) {
+                            stops = "Changes: " + (allFlights[c].route.length - 1);
+                        } else {
+                            stops = "Direct";
+                        }
+                        
+                        stringWithResults += `<div class="card mb-3 flightResult">
+                        <div class="row g-0"><div class="col-md-4 img-div">
+                                <img src="https://daisycon.io/images/airline/?iata=${allFlights[c].airlines[0]}" alt="${allFlights[c].airlines[0]}">
+                             </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                      <div class="cardsHead"><h5 class="card-title">Total price: £${allFlights[c].price}</h5><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#goLogin">Save</button></div> 
+                                        <div class="card-text card-flight">
+                        <div class="leftResult">Lufthansa<br />
+<small class="text-muted">${allFlights[c].cityCodeFrom} - ${allFlights[c].cityCodeTo}</small><br />
+<span class="flightTime">${timeFrom} - ${timeTo}</span><span class="topTime text-muted">${newDay}</span><br />
+${dateFromA}/${dateFromB} - ${dateToA}/${dateToB}<br />
+</div>
+<div class="rightResult">
+Total time: ${convertMS(milliseconds)}<br />
+  ${allFlights[c].cityFrom} - ${allFlights[c].cityTo} (${stops})<br />
+<button type="button" class="btn btn-primary flight-button">Airline Website</button>
+</div>
+</div></div></div>
+</div></div>`;
+                    }
+
+                    stringWithResults += `</div></div>`;
+                    $("#runSearch").html(stringWithResults);
                 } else {
                     $("#runSearch").html(`<div class="card col-8 searchResults">
     <div class="card-body" id="results">

@@ -1,12 +1,10 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
-
 a.navbar-brand {
     white-space: normal;
     text-align: center;
     word-break: break-all;
 }
-
 /* Provide sufficient contrast against white background */
 a {
     color: #0366d6;
@@ -19,6 +17,12 @@ a {
 .flightValidation span {
     margin: 0 20px;
     color: white;
+}
+
+.flight-button {
+    margin-top: 10px;
+    margin-left: 55px;
+    width: 140px;
 }
 
 .btn-primary {
@@ -39,17 +43,66 @@ html {
     font-size: 14px;
 }
 
+.card-flight {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.img-div {
+    text-align: center;
+}
+
+.topTime {
+    font-size: 0.8em !important;
+    font-weight: normal !important;
+    vertical-align: super;
+}
+
+.card-flight div span {
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.card-flight div small {
+    font-size: 0.8em;
+    font-style: italic;
+}
+
+.flightResult div div img {
+    width: 70%;
+}
+
+.rightResult {
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+}
+
+.flightResult {
+    height: 180px;
+}
+
 @media (min-width: 768px) {
     html {
         font-size: 16px;
     }
 }
 
+#goLogin div div .modal-body {
+    line-height: 3em;
+    text-align: center;
+}
+
+.cardsHead, card-flight {
+    display: flex;
+    justify-content: space-between;
+}
+
 #formContainer {
     display: flex;
     justify-content: center;
 }
-
 
 .form-group div {
     display: flex;
@@ -283,13 +336,22 @@ h1 {
 
 #results {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     margin: 30px auto;
 }
+
 .searchResults {
     margin: 0 auto;
     margin-bottom: 20px;
     background-image: linear-gradient(to bottom right, #ffffff 35%,#a7a7a7);
     border: 0px;
     box-shadow: 0px 5px 10px #3c3c3c;
+}
+
+.flightResult {
+    top: -15px;
+    margin: 0px;
+    width: 95%;
+    padding-left: 30px;
 }

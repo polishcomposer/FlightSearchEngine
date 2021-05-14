@@ -17,8 +17,8 @@
                         <div class="form-floating">
                             <label for="Way" class="control-label">Trip</label>
                             <select asp-for="Way" class="form-control trip">
-                                <option value="oneway">One Way</option>
-                                <option value="round" selected="selected">Return</option>
+                                <option value="oneway" selected="selected">One Way</option>
+                                <option value="round">Return</option>
                             </select>
                             <span asp-validation-for="Way" class="text-danger"></span>
                         </div>
@@ -91,7 +91,7 @@
                         </div>
                         <div class="form-floating">
                             <label for="DateTo" class="control-label">Return</label>
-                            <input asp-for="DateTo" class="form-control return" required />
+                            <input asp-for="DateTo" class="form-control return" disabled />
 
                         </div>
                     </div>
@@ -99,7 +99,7 @@
                         <span asp-validation-for="From" class="flightValidation"></span>
                         <span asp-validation-for="To" class="flightValidation"></span>
                         <span asp-validation-for="DateFrom" class="flightValidation"></span>
-                        <input type="submit" value="Search flights" class="btn btn-warning search-button"  />
+                        <input type="submit" value="Search flights" class="btn btn-warning search-button" />
                     </div>
                 </div>
             </form>
@@ -115,7 +115,7 @@
 
 
 
-    <h2 class="display-5">Recently Searched Flights</h2>
+    <h2 class="display-5">Recently Found Flights</h2>
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
         @{
             int countSearches = 0;
@@ -164,6 +164,33 @@
     </div>
 
 </div>
+
+<div class="modal fade" id="goLogin" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Save your flight.</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Please login or register to save your flights.<br />
+                    <a type="button" class="btn btn-primary" asp-area="Identity" asp-page="/Account/Login">Login</a>
+                    <a type="button" class="btn btn-primary" asp-area="Identity" asp-page="/Account/Register">Register</a>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+ 
+
+
+
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
