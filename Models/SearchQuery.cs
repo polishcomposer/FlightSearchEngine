@@ -25,7 +25,7 @@ namespace FlightSE.Models
         [Range(0, 4)]
         public int Infant { get; set; }
         public string Class { get; set; }
-        public int Stopovers { get; set; }
+        public int? Stopovers { get; set; }
         [Required]
         public string Currency { get; set; }
         [Required]

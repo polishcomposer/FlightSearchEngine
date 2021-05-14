@@ -22,6 +22,8 @@ namespace FlightSE.Controllers
         private JObject NewFlight { get; set; }
         private readonly ILogger<HomeController> _logger;
         private readonly ApplicationDbContext _context;
+        public IEnumerable<SearchQuery> SearchQueriesFromData { get; set; }
+        public IEnumerable<SearchQuery> HistoryQueriesFromData { get; set; }
 
         public JsonResult GetLocationFrom(string From)
         {
@@ -43,6 +45,7 @@ namespace FlightSE.Controllers
             var json = JsonConvert.SerializeObject(_context.Location.Where(p => p.AirportLocation.Contains(Name)).ToList().Take(10));
             return Json(json);
         }
+
         public JsonResult GetFlights(string Way, int Adults, int Children, int Infant, string Class, int? Stopovers, string Currency, string From, string To, string DateFrom, string DateTo)
         {
             string DateReturn = "";
@@ -79,9 +82,28 @@ namespace FlightSE.Controllers
             }
 
         }
-       
-        
-        public IEnumerable<SearchQuery> SearchQueriesFromData { get; set; }
+        public async Task<IActionResult> AddQuery(string Way, int Adults, int Children, int Infant, string Class, int? Stopovers, string Currency, string From, string To, DateTime DateFrom, DateTime DateTo)
+        {
+
+            SearchQuery NewSearch = new SearchQuery
+            {
+                Way = Way,
+                Adults = Adults,
+                Children = Children,
+                Infant = Infant,
+                Class = Class,
+                Stopovers = Stopovers,
+                Currency = Currency,
+                From = From,
+                To = To,
+                DateFrom = DateFrom,
+                DateTo = DateTo
+            };
+            _context.SearchQuery.Add(NewSearch);
+            await _context.SaveChangesAsync();
+            return Ok();
+        }        
+    
 
         public HomeController(ILogger<HomeController> logger, ApplicationDbContext context)
         {
@@ -100,18 +122,18 @@ namespace FlightSE.Controllers
             }
             return View(searchQuery);
         }
+        public async Task<IActionResult> HistoryQ()
+        {
+
+            HistoryQueriesFromData = await _context.SearchQuery.OrderByDescending(a => a.QueryDate).ToListAsync();
+            return Json(HistoryQueriesFromData);
+        }
         public async Task<IActionResult> Index()
         {
 
             SearchQueriesFromData = await _context.SearchQuery.OrderByDescending(a => a.QueryDate).ToListAsync();
             ViewBag.SearchHistory = SearchQueriesFromData;
          
-            // GetData();
-          //  ViewBag.SearchData = new IndexModel {
-                //  MyData = NewData 
-              //  MyFlight = NewFlight
-        //};
-            /* @ViewBag.SearchData.MyData */
             return View();
         }
 

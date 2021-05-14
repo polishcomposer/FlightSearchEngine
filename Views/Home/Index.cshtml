@@ -115,8 +115,8 @@
 
 
 
-    <h2 class="display-5">Recently Found Flights</h2>
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+    <h2 class="display-5">Recently Searched Flights</h2>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4" id="historyQueries">
         @{
             int countSearches = 0;
             SearchQuery newModel = new SearchQuery();
@@ -128,32 +128,18 @@
 
             newModel.GetPicture(@item.To);
             <div class="col">
-                <div class="card h-100">
+                <div class="card h-100 historyQuery">
                     <img src="@newModel.ImgAddress["photos"][0]["src"]["medium"]" class="card-img-top" alt="@item.To">
                     <div class="card-body">
                         <h5 class="card-title">
-                            From @item.From To @item.To
+                            From @item.From<br />To @item.To
                         </h5>
                         <p class="card-text">
-                            <a href="#" class="btn btn-primary">View</a>
+                            <!--  <a href="#" class="btn btn-primary">View</a> -->
                         </p>
                     </div>
                 </div>
             </div>
-
-            /*  @item.UserID
-             @item.Way
-             @item.Adults
-            @item.Children
-             @item.Infant
-            @item.Class
-              @item.Stopovers
-            @item.Currency
-               @item.QueryDate
-            @item.DateFrom
-               @item.DateTo
-             */
-
 
             if (countSearches == 3)
             {

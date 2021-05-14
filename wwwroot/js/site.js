@@ -6,6 +6,9 @@ let passangers = 1;
 let dateDeparture;
 let dateReturn;
 let oldReturn;
+let defaultPhoto = "";
+let newHistoryRecords = "";
+let toPictureData = "";
 $(document).ready(function () {
  
     let today = new Date().toISOString().slice(0, 10);
@@ -193,9 +196,6 @@ $(document).ready(function () {
                 }
             
             }
-
-
-
             $.ajax({
             url: "/Home/GetFlights",
             method: "GET",
@@ -217,7 +217,81 @@ $(document).ready(function () {
                 let userFlights = JSON.parse(foundFlights);
                 let allFlights = userFlights["data"];
                 if (allFlights.length > 0) {
-                    console.log(allFlights);
+
+                    $.ajax({
+                        url: "/Home/AddQuery",
+                        method: "GET",
+                        data: {
+                            Way: $("#Way").val(),
+                            Adults: $("#Adults").val(),
+                            Children: $("#Children").val(),
+                            Infant: $("#Infant").val(),
+                            Class: $("#Class").val(),
+                            Stopovers: $("#Stopovers").val(),
+                            Currency: $("#Currency").val(),
+                            From: $("#From").val(),
+                            To: $("#To").val(),
+                            DateFrom: $("#DateFrom").val(),
+                            DateTo: $("#DateTo").val()
+                        },
+                        success: function (ok) {
+                          
+                            $.ajax({
+                                url: "/Home/HistoryQ",
+                                method: "GET",
+                                success: function (hQueries) {
+                                    newHistoryRecords = "";
+                                    for (let hQ = 0; hQ < 4; hQ++) {
+                                      
+                                        toPictureData = hQueries[hQ]["to"];
+                                        $.ajax({
+                                            url: `https://pixabay.com/api/?key=3853087-8c2a07a3d1d9a8e2ac4f750a3&q=${toPictureData}&image_type=photo&per_page=3`,
+                                            method: "GET",
+                                            dataType: "json",
+                                            success: function (newImg) {
+                                      
+                                              if (newImg["hits"].length>0) {
+                                                  defaultPhoto = newImg["hits"][0]["webformatURL"];
+                                                } else {
+                                                  defaultPhoto = "../img/journey.jpg";
+                                                } 
+                                            
+                                                newHistoryRecords += `<div class="col">
+                                                <div class="card h-100 historyQuery">
+                                                    <img src="${defaultPhoto}" class="card-img-top" alt="toPictureData">
+                                                     <div class="card-body">
+                                                        <h5 class="card-title">
+                                                            From ${hQueries[hQ]["from"]}<br />To ${hQueries[hQ]["to"]}
+                                                        </h5>
+                                                        <p class="card-text">
+                                                            <!--  <a href="#" class="btn btn-primary">View</a> -->
+                                                        </p>
+                                                    </div></div></div>`;
+                                            },
+                                            async: false,
+                                            error: function (err) {
+                                                console.log(err);
+                                            }
+                                        });
+                                    }
+                              
+                                    $("#historyQueries").html(newHistoryRecords);
+
+                                },
+                                error: function (err) {
+                                    console.log(err);
+                                }
+                            });
+
+
+
+                        },
+                        error: function (err) {
+                            console.log(err);
+                        }
+                    });
+
+
                     let stringWithResults = `<div class="card col-8 searchResults">
     <div class="card-body" id="results">`;
                     let departureTime = ""; 
@@ -232,8 +306,11 @@ $(document).ready(function () {
                     let secondDay = "";
                     let newDay = "";
                     let stops = "";
+                    let currencySign = "";
                     let milliseconds = 0;
+                    let back = "";
                     for (let c = 0; c < allFlights.length; c++) {
+                        console.log(allFlights[c]);
                         departureTime = allFlights[c].local_departure;
                         arrivalTime = allFlights[c].local_arrival;
                         timeFrom = departureTime.substring(11, 16);
@@ -261,26 +338,41 @@ $(document).ready(function () {
                         } else {
                             stops = "Direct";
                         }
-                        
+                        if ($('#Currency').val() == "GBP") {
+                            currencySign = "£";
+            } else {
+                            currencySign = $('#Currency').val();
+                        }
+                       
+                        if ($('#DateTo').val()) {
+                            back = ` - ${allFlights[c].cityFrom}`;
+                        }
                         stringWithResults += `<div class="card mb-3 flightResult">
                         <div class="row g-0"><div class="col-md-4 img-div">
                                 <img src="https://daisycon.io/images/airline/?iata=${allFlights[c].airlines[0]}" alt="${allFlights[c].airlines[0]}">
                              </div>
                                 <div class="col-md-8">
                                     <div class="card-body">
-                                      <div class="cardsHead"><h5 class="card-title">Total price: £${allFlights[c].price}</h5><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#goLogin">Save</button></div> 
-                                        <div class="card-text card-flight">
-                        <div class="leftResult">Lufthansa<br />
+                                      <div class="cardsHead"><h5 class="card-title">Total price: ${currencySign} ${allFlights[c].price}</h5><a type="button" class="btn btn-primary flight-button btn-sm" href="${allFlights[c].deep_link}" target="_blank">Book your flight (kiwi.com)</a>
+                                            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#goLogin">Save</button></div> 
+                                       <div class="cardsHead">
+                                                    <span> ${allFlights[c].cityFrom} - ${allFlights[c].cityTo}${back} (${stops})</span>
+                                                    <span>Total time: ${convertSeconds(milliseconds)}</span>
+                                       </div>
+
+<div class="card-text card-flight">
+                        <div class="leftResult">
 <small class="text-muted">${allFlights[c].cityCodeFrom} - ${allFlights[c].cityCodeTo}</small><br />
 <span class="flightTime">${timeFrom} - ${timeTo}</span><span class="topTime text-muted">${newDay}</span><br />
 ${dateFromA}/${dateFromB} - ${dateToA}/${dateToB}<br />
+
 </div>
 <div class="rightResult">
-Total time: ${convertMS(milliseconds)}<br />
-  ${allFlights[c].cityFrom} - ${allFlights[c].cityTo} (${stops})<br />
-<button type="button" class="btn btn-primary flight-button">Airline Website</button>
+<br />
+ <br />
 </div>
-</div></div></div>
+</div>
+</div></div>
 </div></div>`;
                     }
 
@@ -305,4 +397,6 @@ No flights have been found based on the information provided.
         }
     });
 
+   
+   
 });

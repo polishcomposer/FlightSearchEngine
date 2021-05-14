@@ -22,7 +22,7 @@ a {
 .flight-button {
     margin-top: 10px;
     margin-left: 55px;
-    width: 140px;
+    width: 185px;
 }
 
 .btn-primary {
@@ -43,6 +43,15 @@ html {
     font-size: 14px;
 }
 
+.historyQuery div h5 {
+    font-size: 1em !important;
+}
+
+.historyQuery img {
+    height: 250px;
+    overflow: hidden;
+}
+
 .card-flight {
     margin-top: 10px;
     display: flex;
@@ -50,8 +59,16 @@ html {
 }
 
 .img-div {
+    display: flex;
     text-align: center;
+    vertical-align: center;
 }
+
+    .img-div img {
+        width: 70%;
+        height: auto;
+        margin-left: 20px;
+    }
 
 .topTime {
     font-size: 0.8em !important;
