@@ -1,6 +1,6 @@
 # Flight Search Engine
 <p align="center">
-  <img src="https://www.swoszowski.co.uk/fse/img/fse.png">
+  <img src="https://www.swoszowski.co.uk/fse/img/fse-min.png">
 </p>
 
 **Functionality**
