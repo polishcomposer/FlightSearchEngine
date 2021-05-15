@@ -1,11 +1,10 @@
-﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
+﻿
 a.navbar-brand {
     white-space: normal;
     text-align: center;
     word-break: break-all;
 }
-/* Provide sufficient contrast against white background */
+
 a {
     color: #0366d6;
 }
@@ -13,15 +12,15 @@ a {
 #logo {
     width: 10%;
 }
-
+.navbar {
+    box-shadow: 0px 4px 3px -1px #3c3c3c8c !important;
+}
 .flightValidation span {
     margin: 0 20px;
     color: white;
 }
 
 .flight-button {
-    margin-top: 10px;
-    margin-left: 55px;
     width: 185px;
 }
 
@@ -37,6 +36,12 @@ a {
     border-color: #1861ac;
 }
 
+.account {
+    background-image: linear-gradient(to bottom, #ffffff 25%,#c6ddff, #fbffbf 90%);
+    padding: 10px;
+    border-radius: 3%;
+    box-shadow: 3px 3px 3px #848484;
+}
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
@@ -61,7 +66,6 @@ html {
 .img-div {
     display: flex;
     text-align: center;
-    vertical-align: center;
 }
 
     .img-div img {
@@ -81,6 +85,13 @@ html {
     font-size: 1.1em;
 }
 
+.resultInside {
+    width: 80%;
+    display: flex;
+    justify-content: space-between;
+    padding-right: 10px;
+}
+
 .card-flight div small {
     font-size: 0.8em;
     font-style: italic;
@@ -90,11 +101,7 @@ html {
     width: 70%;
 }
 
-.rightResult {
-    display: flex;
-    flex-direction: column;
-    text-align: right;
-}
+
 
 .flightResult {
     height: 180px;
@@ -115,6 +122,22 @@ html {
     display: flex;
     justify-content: space-between;
 }
+
+.cardsHead {
+    display: flex;
+    align-items: flex-start !important;
+}
+
+.save-button {
+    height: 30px;
+}
+
+.cardsHead2 {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
 
 #formContainer {
     display: flex;
@@ -351,6 +374,54 @@ h1 {
     }
 }
 
+.airlineImg {
+    width: 90px !important;
+    height: 40px;
+    object-fit: cover;
+}
+
+.rightResult small {
+    padding: 0 20px;
+    font-size: 1em !important;
+}
+
+    .rightResult small span {
+        text-decoration: underline;
+        font-weight: normal;
+        vertical-align: super;
+        font-size: 0.8em;
+    }
+
+.rightResult span {
+    font-weight: normal !important;
+}
+
+.rightResult .flightTime {
+    font-weight: bold !important;
+    font-size: 1.2em;
+}
+
+.flightTime {
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+.totalTime {
+    display: flex;
+    flex-direction: column;
+    line-height: 0.9em;
+}
+
+.totalDates {
+    margin-left: 10px;
+}
+
+.rightResult {
+    width: 85%;
+    display: flex;
+    justify-content: space-between;
+}
+
 #results {
     display: flex;
     flex-wrap: wrap;
@@ -367,8 +438,8 @@ h1 {
 }
 
 .flightResult {
+    height: auto;
     top: -15px;
     margin: 0px;
     width: 95%;
-    padding-left: 30px;
 }

@@ -189,10 +189,12 @@ $(document).ready(function () {
                 seconds = seconds % 60;
                 minute = minute % 60;
                 hour = hour % 24;
-                if (day != 0) {
-                    return day + "d " + hour + "h " + minute + "m";
-                } else {
+                if (day == 0) {
                     return hour + "h " + minute + "m";
+                } else if (day == 0 && hour == 0) {
+                    return minute + "m";
+                } else {
+                    return day + "d " + hour + "h " + minute + "m";
                 }
             
             }
@@ -309,8 +311,9 @@ $(document).ready(function () {
                     let currencySign = "";
                     let milliseconds = 0;
                     let back = "";
+
+                    console.log(allFlights);
                     for (let c = 0; c < allFlights.length; c++) {
-                        console.log(allFlights[c]);
                         departureTime = allFlights[c].local_departure;
                         arrivalTime = allFlights[c].local_arrival;
                         timeFrom = departureTime.substring(11, 16);
@@ -340,40 +343,55 @@ $(document).ready(function () {
                         }
                         if ($('#Currency').val() == "GBP") {
                             currencySign = "£";
-            } else {
+                        } else {
                             currencySign = $('#Currency').val();
                         }
                        
                         if ($('#DateTo').val()) {
-                            back = ` - ${allFlights[c].cityFrom}`;
+                            back = ` - ${allFlights[c].cityFrom} ${allFlights[c].cityCodeFrom}`;
                         }
                         stringWithResults += `<div class="card mb-3 flightResult">
-                        <div class="row g-0"><div class="col-md-4 img-div">
-                                <img src="https://daisycon.io/images/airline/?iata=${allFlights[c].airlines[0]}" alt="${allFlights[c].airlines[0]}">
-                             </div>
-                                <div class="col-md-8">
+                                <div class="col-12">
                                     <div class="card-body">
-                                      <div class="cardsHead"><h5 class="card-title">Total price: ${currencySign} ${allFlights[c].price}</h5><a type="button" class="btn btn-primary flight-button btn-sm" href="${allFlights[c].deep_link}" target="_blank">Book your flight (kiwi.com)</a>
-                                            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#goLogin">Save</button></div> 
-                                       <div class="cardsHead">
-                                                    <span> ${allFlights[c].cityFrom} - ${allFlights[c].cityTo}${back} (${stops})</span>
+                                      <div class="cardsHead"><h5 class="card-title">Total price: ${currencySign} ${allFlights[c].price}</h5>
+
+         <div class="totalTime"><span class="flightTime">${timeFrom} - ${timeTo}</span> <span class="totalDates">${dateFromA}/${dateFromB} - ${dateToA}/${dateToB}<span class="topTime text-muted">${newDay}</span></div>
+                  <div>    <a type="button" class="btn btn-primary flight-button btn-sm" href="${allFlights[c].deep_link}" target="_blank">Book your flight (kiwi.com)</a>   <button type="button" class="btn btn-primary btn-sm save-button" data-toggle="modal" data-target="#goLogin">Save</button></div>                                                                       
+</div> 
+                                       <div class="cardsHead2">
+                                                    <span> ${allFlights[c].cityFrom} ${allFlights[c].cityCodeFrom} - ${allFlights[c].cityTo} ${allFlights[c].cityCodeTo} ${back} (${stops})</span>
                                                     <span>Total time: ${convertSeconds(milliseconds)}</span>
-                                       </div>
+                                      </div>`; 
+                            
 
-<div class="card-text card-flight">
-                        <div class="leftResult">
-<small class="text-muted">${allFlights[c].cityCodeFrom} - ${allFlights[c].cityCodeTo}</small><br />
-<span class="flightTime">${timeFrom} - ${timeTo}</span><span class="topTime text-muted">${newDay}</span><br />
-${dateFromA}/${dateFromB} - ${dateToA}/${dateToB}<br />
+                        let newDaysPart = "";
+                        for (let part = 0; part < allFlights[c]["route"].length; part++) {
+                            var dateFrom = new Date(allFlights[c]["route"][part]["local_departure"]);
+                            var dateTo = new Date(allFlights[c]["route"][part]["local_arrival"]);
+                            var differenceFromTo = (dateTo - dateFrom) / 1000;
+                            const diffTimePart = Math.abs(allFlights[c]["route"][part]["local_arrival"].substring(0, 10) - allFlights[c]["route"][part]["local_departure"].substring(0, 10));
+                            const diffDaysPart = Math.ceil(diffTimePart / (1000 * 60 * 60 * 24));
 
-</div>
-<div class="rightResult">
-<br />
- <br />
-</div>
-</div>
-</div></div>
-</div></div>`;
+                            if (diffTimePart != 0) {
+                                newDaysPart = "+" + diffDaysPart;
+                            }
+                            airlineImage = `https://daisycon.io/images/airline/?iata=${allFlights[c]["route"][part]["airline"]}`;
+                                stringWithResults += `
+                                        <hr>
+                                      <div class="card-text card-flight">
+                                            <div class="leftResult">
+                                                    <img src="${airlineImage}" alt="${allFlights[c].airlines[0]}" class="airlineImg">
+                                            </div>
+                                            <div class="rightResult">
+                                                    <div class="resultInside"><small class="text-muted">${allFlights[c]["route"][part].cityFrom} <span> ${" _" + convertSeconds(differenceFromTo) + "_"}</span>&nbsp${allFlights[c]["route"][part].cityTo}</small>
+                                                    <span class="flightTime">${allFlights[c]["route"][part]["local_departure"].substring(11, 16)} - ${allFlights[c]["route"][part]["local_arrival"].substring(11, 16)}</span></div>
+                                                    <span>${allFlights[c]["route"][part]["local_departure"].substring(8, 10)}/${allFlights[c]["route"][part]["local_departure"].substring(5, 7)} - ${allFlights[c]["route"][part]["local_arrival"].substring(8, 10)}/${allFlights[c]["route"][part]["local_arrival"].substring(5, 7)}</span>
+                                            </div>
+                                      </div>`;
+
+            }
+
+                        stringWithResults += `</div></div></div>`;
                     }
 
                     stringWithResults += `</div></div>`;
