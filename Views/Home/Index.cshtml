@@ -1,4 +1,7 @@
 ﻿@model FlightSE.Models.SearchQuery
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
 @{
     ViewData["Title"] = "Find Your Flight";
 }
@@ -11,6 +14,15 @@
 
         <div class="card-body">
             <form onsubmit="return false" id="submitSearch">
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <input type="hidden" id="UserName" value="@User.Identity.Name">
+
+                }
+                else
+                {
+                    <input type="hidden" id="UserName" value="">
+                }
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group form-floating">
                     <div>
@@ -162,8 +174,8 @@
             </div>
             <div class="modal-body">
                 Please login or register to save your flights.<br />
-                    <a type="button" class="btn btn-primary" asp-area="Identity" asp-page="/Account/Login">Login</a>
-                    <a type="button" class="btn btn-primary" asp-area="Identity" asp-page="/Account/Register">Register</a>
+                <a type="button" class="btn btn-primary" asp-area="Identity" asp-page="/Account/Login">Login</a>
+                <a type="button" class="btn btn-primary" asp-area="Identity" asp-page="/Account/Register">Register</a>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -172,7 +184,7 @@
     </div>
 </div>
 
- 
+
 
 
 

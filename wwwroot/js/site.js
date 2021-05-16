@@ -311,6 +311,7 @@ $(document).ready(function () {
                     let currencySign = "";
                     let milliseconds = 0;
                     let back = "";
+                    let saveButton = "";
 
                     console.log(allFlights);
                     for (let c = 0; c < allFlights.length; c++) {
@@ -350,13 +351,20 @@ $(document).ready(function () {
                         if ($('#DateTo').val()) {
                             back = ` - ${allFlights[c].cityFrom} ${allFlights[c].cityCodeFrom}`;
                         }
+                        if ($('#UserName').val() != "") {
+                            saveButton = `<span class="user-flight${c}"><button type="button" class="btn btn-primary btn-sm save-button user-flight-button${c}" id="user-save-button">Save</button></span>`;
+                        } else {
+                            saveButton = `<span class="user-flight${c}"><button type="button" class="btn btn-primary btn-sm save-button" data-toggle="modal" data-target="#goLogin">Save</button></span>`;
+                        }
+                       
+
                         stringWithResults += `<div class="card mb-3 flightResult">
                                 <div class="col-12">
                                     <div class="card-body">
                                       <div class="cardsHead"><h5 class="card-title">Total price: ${currencySign} ${allFlights[c].price}</h5>
 
          <div class="totalTime"><span class="flightTime">${timeFrom} - ${timeTo}</span> <span class="totalDates">${dateFromA}/${dateFromB} - ${dateToA}/${dateToB}<span class="topTime text-muted">${newDay}</span></div>
-                  <div>    <a type="button" class="btn btn-primary flight-button btn-sm" href="${allFlights[c].deep_link}" target="_blank">Book your flight (kiwi.com)</a>   <button type="button" class="btn btn-primary btn-sm save-button" data-toggle="modal" data-target="#goLogin">Save</button></div>                                                                       
+                  <div class="top-right-buttons">    <a type="button" class="btn btn-primary flight-button btn-sm" href="${allFlights[c].deep_link}" target="_blank">Book your flight (kiwi.com)</a>  ${saveButton}</div>                                                                       
 </div> 
                                        <div class="cardsHead2">
                                                     <span> ${allFlights[c].cityFrom} ${allFlights[c].cityCodeFrom} - ${allFlights[c].cityTo} ${allFlights[c].cityCodeTo} ${back} (${stops})</span>
@@ -366,6 +374,7 @@ $(document).ready(function () {
 
                         let newDaysPart = "";
                         for (let part = 0; part < allFlights[c]["route"].length; part++) {
+                           
                             var dateFrom = new Date(allFlights[c]["route"][part]["local_departure"]);
                             var dateTo = new Date(allFlights[c]["route"][part]["local_arrival"]);
                             var differenceFromTo = (dateTo - dateFrom) / 1000;
@@ -392,10 +401,44 @@ $(document).ready(function () {
             }
 
                         stringWithResults += `</div></div></div>`;
+                        
+                 
                     }
-
                     stringWithResults += `</div></div>`;
                     $("#runSearch").html(stringWithResults);
+
+                    for (let fN = 0; fN < allFlights.length; fN++) {
+                        $(`.user-flight-button${fN}`).on('click', function () {
+                            $(`.user-flight${fN}`).html(`<span class="saved">Saved <img src="../img/ok.svg" alt="ok"></span>`);
+
+
+                            $.ajax({
+                                url: "/Home/AddQuery",
+                                method: "GET",
+                                data: {
+                                    UserID: $('#UserName').val(),
+                                    Price: ,
+                                    TotalFlightTimes: ,
+                                    TotalDates: ,
+                                    BookingLink: ,
+                                    TotalTime: ,
+                                    FlightPlaces: ,
+                                    Details 
+                                },
+                                success: function (addedFlight) {
+
+                                    console.log("Added Flight: " + addedFlight);
+                                },
+                                error: function (err) {
+                                    console.log(err);
+                                }
+                            });
+
+                        });
+                    }
+                    
+                    
+                   
                 } else {
                     $("#runSearch").html(`<div class="card col-8 searchResults">
     <div class="card-body" id="results">

@@ -163,6 +163,18 @@ html {
     justify-content: space-between;
 }
 
+.saved {
+    color: green;
+    font-size: 0.8em;
+}
+
+    .saved img {
+        width: 5% !important;
+    }
+
+.top-right-buttons {
+    width: 240px;
+}
 
 #formContainer {
     display: flex;
