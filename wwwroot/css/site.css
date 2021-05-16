@@ -12,9 +12,17 @@ a {
 #logo {
     width: 10%;
 }
+
+#testUser:hover {
+    text-decoration: underline;
+    color: gray;
+    cursor: pointer;
+}
+
 .navbar {
     box-shadow: 0px 4px 3px -1px #3c3c3c8c !important;
 }
+
 .flightValidation span {
     margin: 0 20px;
     color: white;
@@ -39,13 +47,29 @@ a {
 .account {
     background-image: linear-gradient(to bottom, #ffffff 25%,#c6ddff, #fbffbf 90%);
     padding: 10px;
-    border-radius: 3%;
+    border-radius: 10px;
+    box-shadow: 3px 3px 3px #848484;
+}
+
+.account2 {
+    background-image: linear-gradient(to bottom, #ffffff 25%,#c6ddff, #fbffbf 90%);
+    padding: 10px;
+    border-radius: 10px;
     box-shadow: 3px 3px 3px #848484;
 }
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
     font-size: 14px;
+}
+
+.recent {
+    width: 380px;
+    margin: auto;
+    margin-bottom: 10px;
+    padding: 5px;
+    color: white;
+    text-shadow: 1px 1px #212121;
 }
 
 .historyQuery div h5 {
@@ -101,7 +125,9 @@ html {
     width: 70%;
 }
 
-
+.accountBox {
+    padding-top: 120px;
+}
 
 .flightResult {
     height: 180px;

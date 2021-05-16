@@ -1,4 +1,8 @@
 ﻿<!DOCTYPE html>
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -6,7 +10,7 @@
     <meta name="keywords" content="flight search engine, flights, airlines">
     <meta name="author" content="Dariusz Swoszowski">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="image" property="og:image" content="https://www.swoszowski.co.uk/fse/img/fse.png" />
+    <meta name="image" property="og:image" content="https://www.swoszowski.co.uk/fse/img/fse-min.png" />
     <title>@ViewData["Title"] - Flight Search Engine</title>
     <link rel="shortcut icon" type="image/jpg" href="~/favicon.ico" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -17,7 +21,7 @@
     <header>
         <nav class="navbar fixed-top navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img id="logo" src="~/img/flightLogo.svg" alt="Flight Logo"/> Flight Search Engine</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img id="logo" src="~/img/flightLogo.svg" alt="Flight Logo" /> Flight Search Engine</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -28,13 +32,20 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Flight Status</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">COVID-19 Travel Information</a>
-                        </li>
-                    </ul>
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark font-weight-bold" asp-area="" asp-controller="Home" asp-action="MyFlights">My Flights</a>
+                            </li>
+                        }
+                       
+                            <li class="nav-item">
+                                <a class="nav-link text-dark">Flight Status</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark">COVID-19 Travel Information</a>
+                            </li>
+                        </ul>
                 </div>
             </div>
         </nav>

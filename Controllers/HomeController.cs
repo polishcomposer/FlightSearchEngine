@@ -1,5 +1,6 @@
 ﻿using FlightSE.Data;
 using FlightSE.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -136,8 +137,8 @@ namespace FlightSE.Controllers
          
             return View();
         }
-
-        public IActionResult Privacy()
+        [Authorize]
+        public IActionResult MyFlights()
         {
             return View();
         }

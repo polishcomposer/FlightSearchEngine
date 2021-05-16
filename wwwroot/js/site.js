@@ -415,6 +415,8 @@ No flights have been found based on the information provided.
         }
     });
 
-   
+    $('#testUser').on('click', function () {
+        alert("Test account management is unavailable. Please create your own account.");
+    });
    
 });
