@@ -47,14 +47,7 @@ a {
 .account {
     background-image: linear-gradient(to bottom, #ffffff 25%,#c6ddff, #fbffbf 90%);
     padding: 10px;
-    border-radius: 10px;
-    box-shadow: 3px 3px 3px #848484;
-}
-
-.account2 {
-    background-image: linear-gradient(to bottom, #ffffff 25%,#c6ddff, #fbffbf 90%);
-    padding: 10px;
-    border-radius: 10px;
+    border-radius: 3%;
     box-shadow: 3px 3px 3px #848484;
 }
 /* Sticky footer styles
@@ -62,6 +55,14 @@ a {
 html {
     font-size: 14px;
 }
+
+.userResultsCard {
+    margin-top: 100px !important;
+}
+
+    .userResultsCard h1 {
+        margin-top: -50px !important;
+    }
 
 .recent {
     width: 380px;
@@ -125,9 +126,7 @@ html {
     width: 70%;
 }
 
-.accountBox {
-    padding-top: 120px;
-}
+
 
 .flightResult {
     height: 180px;
