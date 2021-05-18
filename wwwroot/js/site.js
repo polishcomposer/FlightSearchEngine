@@ -313,7 +313,11 @@ $(document).ready(function () {
                     let back = "";
                     let saveButton = "";
 
+                  
+                    let userFlightResults = {};
+                
                     console.log(allFlights);
+
                     for (let c = 0; c < allFlights.length; c++) {
                         departureTime = allFlights[c].local_departure;
                         arrivalTime = allFlights[c].local_arrival;
@@ -347,16 +351,32 @@ $(document).ready(function () {
                         } else {
                             currencySign = $('#Currency').val();
                         }
-                       
+
                         if ($('#DateTo').val()) {
                             back = ` - ${allFlights[c].cityFrom} ${allFlights[c].cityCodeFrom}`;
                         }
                         if ($('#UserName').val() != "") {
-                            saveButton = `<span class="user-flight${c}"><button type="button" class="btn btn-primary btn-sm save-button user-flight-button${c}" id="user-save-button">Save</button></span>`;
+
+                            $.ajax({
+                                url: "/Home/GetSingleFlight",
+                                method: "GET",
+                                data: {
+                                    UserID: $('#UserName').val(),
+                                    FlightID: allFlights[c].id
+                                },
+                                dataType: "json",
+                                success: function (ok) {
+                                     saveButton = `<span class="saved">Saved <img src="../img/ok.svg" alt="ok"></span>`;
+                                },
+                                async: false,
+                                error: function (err) {
+                                    saveButton = `<span class="user-flight${c}"><button type="button" class="btn btn-primary btn-sm save-button user-flight-button${c}" id="user-save-button">Save</button></span>`;
+                                }
+                            }); 
                         } else {
                             saveButton = `<span class="user-flight${c}"><button type="button" class="btn btn-primary btn-sm save-button" data-toggle="modal" data-target="#goLogin">Save</button></span>`;
                         }
-                       
+
 
                         stringWithResults += `<div class="card mb-3 flightResult">
                                 <div class="col-12">
@@ -369,12 +389,20 @@ $(document).ready(function () {
                                        <div class="cardsHead2">
                                                     <span> ${allFlights[c].cityFrom} ${allFlights[c].cityCodeFrom} - ${allFlights[c].cityTo} ${allFlights[c].cityCodeTo} ${back} (${stops})</span>
                                                     <span>Total time: ${convertSeconds(milliseconds)}</span>
-                                      </div>`; 
-                            
+                                      </div>`;
 
-                        let newDaysPart = "";
+
+                        userFlightResults[c] = {};
+                        userFlightResults[c]["flightID"] = allFlights[c].id;
+                        userFlightResults[c]["Price"] = `Total price: ${currencySign} ${allFlights[c].price}`;
+                        userFlightResults[c]["TotalFlightTimes"] = `${timeFrom} - ${timeTo}`;
+                        userFlightResults[c]["TotalDates"] = `${dateFromA}/${dateFromB} - ${dateToA}/${dateToB}`;
+                        userFlightResults[c]["BookingLink"] = allFlights[c].deep_link;
+                        userFlightResults[c]["TotalTime"] = convertSeconds(milliseconds);
+                        userFlightResults[c]["FlightPlaces"] = ` ${allFlights[c].cityFrom} ${allFlights[c].cityCodeFrom} - ${allFlights[c].cityTo} ${allFlights[c].cityCodeTo} ${back} (${stops})`;
+                        userFlightResults[c]["Details"] = "";
                         for (let part = 0; part < allFlights[c]["route"].length; part++) {
-                           
+
                             var dateFrom = new Date(allFlights[c]["route"][part]["local_departure"]);
                             var dateTo = new Date(allFlights[c]["route"][part]["local_arrival"]);
                             var differenceFromTo = (dateTo - dateFrom) / 1000;
@@ -385,7 +413,7 @@ $(document).ready(function () {
                                 newDaysPart = "+" + diffDaysPart;
                             }
                             airlineImage = `https://daisycon.io/images/airline/?iata=${allFlights[c]["route"][part]["airline"]}`;
-                                stringWithResults += `
+                            stringWithResults += `
                                         <hr>
                                       <div class="card-text card-flight">
                                             <div class="leftResult">
@@ -398,32 +426,39 @@ $(document).ready(function () {
                                             </div>
                                       </div>`;
 
-            }
-
+                            userFlightResults[c]["Details"] += `._.${part}_${airlineImage}_${allFlights[c]["route"][part].cityFrom}_${convertSeconds(differenceFromTo)}_${allFlights[c]["route"][part].cityTo}_${allFlights[c]["route"][part]["local_departure"].substring(11, 16)}_${allFlights[c]["route"][part]["local_arrival"].substring(11, 16)}_${allFlights[c]["route"][part]["local_departure"].substring(8, 10)}_${allFlights[c]["route"][part]["local_departure"].substring(5, 7)}_${allFlights[c]["route"][part]["local_arrival"].substring(8, 10)}_${allFlights[c]["route"][part]["local_arrival"].substring(5, 7)}`;
+                   
+                       
+                        }
                         stringWithResults += `</div></div></div>`;
-                        
-                 
+
                     }
                     stringWithResults += `</div></div>`;
                     $("#runSearch").html(stringWithResults);
+
+                    console.log(userFlightResults);
+                                
+
 
                     for (let fN = 0; fN < allFlights.length; fN++) {
                         $(`.user-flight-button${fN}`).on('click', function () {
                             $(`.user-flight${fN}`).html(`<span class="saved">Saved <img src="../img/ok.svg" alt="ok"></span>`);
 
-
+                            
                             $.ajax({
-                                url: "/Home/AddQuery",
+                                url: "/Home/AddFlight",
                                 method: "GET",
                                 data: {
                                     UserID: $('#UserName').val(),
-                                    Price: ,
-                                    TotalFlightTimes: ,
-                                    TotalDates: ,
-                                    BookingLink: ,
-                                    TotalTime: ,
-                                    FlightPlaces: ,
-                                    Details 
+                                    Price: userFlightResults[fN]["Price"],
+                                    TotalFlightTimes: userFlightResults[fN]["TotalFlightTimes"],
+                                    TotalDates: userFlightResults[fN]["TotalDates"],
+                                    BookingLink: userFlightResults[fN]["BookingLink"],
+                                    TotalTime: userFlightResults[fN]["TotalTime"],
+                                    FlightPlaces: userFlightResults[fN]["FlightPlaces"],
+                                    Details: userFlightResults[fN]["Details"],
+                                    FlightID: userFlightResults[fN]["flightID"]
+
                                 },
                                 success: function (addedFlight) {
 
@@ -432,12 +467,12 @@ $(document).ready(function () {
                                 error: function (err) {
                                     console.log(err);
                                 }
-                            });
+                            }); 
 
                         });
                     }
                     
-                    
+                   
                    
                 } else {
                     $("#runSearch").html(`<div class="card col-8 searchResults">
@@ -461,5 +496,30 @@ No flights have been found based on the information provided.
     $('#testUser').on('click', function () {
         alert("Test account management is unavailable. Please create your own account.");
     });
-   
+
+
+
+    /*
+    let details = "._.0_https://daisycon.io/images/airline/?iata=FR_London_2h 20m_Porto_09:30_11:50_19_05_19_05._.1_https://daisycon.io/images/airline/?iata=FR_Porto_3h 15m_Paris_14:10_17:25_19_05_19_05";
+    let parts = details.split("._.");
+    let insertLines = "";
+    for (let fI = 1; fI < parts.length; fI++) {
+        let partsInfo = parts[fI].split("_");
+        for (let pI = 0; pI < partsInfo.length; pI++) {
+            insertLines += `${partsInfo[pI]} <br/>`;
+        }
+        insertLines += `<hr>`;
+    }
+    $('#flights').html(insertLines);
+    */
+
+
+
+
+
+
+
+
+
+
 });

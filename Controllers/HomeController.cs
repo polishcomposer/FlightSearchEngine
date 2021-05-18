@@ -36,6 +36,11 @@ namespace FlightSE.Controllers
             var json = JsonConvert.SerializeObject(_context.Location.Single(p => p.AirportLocation == To));
             return Json(json);
         }
+        public JsonResult GetSingleFlight(string UserID, string FlightID)
+        {
+            var json = JsonConvert.SerializeObject(_context.UserFlight.Single(p => p.UserID == UserID && p.FlightID == FlightID));
+            return Json(json);
+        }
         public JsonResult GetLocations(string Name)
         {
             var json = JsonConvert.SerializeObject(_context.Location.Where(p => p.AirportLocation.Contains(Name)).ToList().Take(10));
@@ -103,8 +108,28 @@ namespace FlightSE.Controllers
             _context.SearchQuery.Add(NewSearch);
             await _context.SaveChangesAsync();
             return Ok();
-        }        
-    
+        }
+
+        public async Task<IActionResult> AddFlight(string UserID, string Price, string TotalFlightTimes, string TotalDates, string BookingLink, string TotalTime, string FlightPlaces, string Details, string FlightID)
+        {
+
+            UserFlight NewSavedFlight = new UserFlight
+            {
+                UserID = UserID,
+                Price = Price,
+                TotalFlightTimes = TotalFlightTimes,
+                TotalDates = TotalDates,
+                BookingLink = BookingLink,
+                TotalTime = TotalTime,
+                FlightPlaces = FlightPlaces,
+                Details = Details,
+                FlightID = FlightID
+
+    };
+            _context.UserFlight.Add(NewSavedFlight);
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
 
         public HomeController(ILogger<HomeController> logger, ApplicationDbContext context)
         {

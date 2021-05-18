@@ -18,5 +18,6 @@ namespace FlightSE.Models
         public string TotalTime { get; set; }
         public string FlightPlaces { get; set; }
         public string Details { get; set; }
+        public string FlightID { get; set; }
     }
 }
