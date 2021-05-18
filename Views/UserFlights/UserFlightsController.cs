@@ -18,7 +18,7 @@ namespace FlightSE.Views.UserFlights
         {
             _context = context;
         }
-
+        /*
         // GET: UserFlights
         public async Task<IActionResult> Index()
         {
@@ -149,5 +149,6 @@ namespace FlightSE.Views.UserFlights
         {
             return _context.UserFlight.Any(e => e.ID == id);
         }
+        */
     }
 }

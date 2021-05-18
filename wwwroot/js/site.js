@@ -109,12 +109,12 @@ $(document).ready(function () {
 
                           },
                           error: function (err) {
-                              console.log(err);
+                              
                           }
                       }); 
             },
             error: function (err) {
-                console.log(err);
+               
             }
         });
     });
@@ -149,12 +149,12 @@ $(document).ready(function () {
 
                     },
                     error: function (err) {
-                        console.log(err);
+                      
                     }
                 });
             },
             error: function (err) {
-                console.log(err);
+               
             }
         });
     });
@@ -272,7 +272,7 @@ $(document).ready(function () {
                                             },
                                             async: false,
                                             error: function (err) {
-                                                console.log(err);
+                                               
                                             }
                                         });
                                     }
@@ -281,7 +281,7 @@ $(document).ready(function () {
 
                                 },
                                 error: function (err) {
-                                    console.log(err);
+                                   
                                 }
                             });
 
@@ -289,7 +289,7 @@ $(document).ready(function () {
 
                         },
                         error: function (err) {
-                            console.log(err);
+                           
                         }
                     });
 
@@ -316,7 +316,7 @@ $(document).ready(function () {
                   
                     let userFlightResults = {};
                 
-                    console.log(allFlights);
+                    
 
                     for (let c = 0; c < allFlights.length; c++) {
                         departureTime = allFlights[c].local_departure;
@@ -436,7 +436,7 @@ $(document).ready(function () {
                     stringWithResults += `</div></div>`;
                     $("#runSearch").html(stringWithResults);
 
-                    console.log(userFlightResults);
+                  
                                 
 
 
@@ -462,10 +462,10 @@ $(document).ready(function () {
                                 },
                                 success: function (addedFlight) {
 
-                                    console.log("Added Flight: " + addedFlight);
+                                    
                                 },
                                 error: function (err) {
-                                    console.log(err);
+                                    
                                 }
                             }); 
 
@@ -483,7 +483,7 @@ No flights have been found based on the information provided.
                 }
             },
             error: function (err) {
-                console.log(err);
+                
                 $("#runSearch").html(`<div class="card col-8 searchResults">
     <div class="card-body" id="results">
 No flights have been found based on the information provided.
@@ -496,30 +496,6 @@ No flights have been found based on the information provided.
     $('#testUser').on('click', function () {
         alert("Test account management is unavailable. Please create your own account.");
     });
-
-
-
-    /*
-    let details = "._.0_https://daisycon.io/images/airline/?iata=FR_London_2h 20m_Porto_09:30_11:50_19_05_19_05._.1_https://daisycon.io/images/airline/?iata=FR_Porto_3h 15m_Paris_14:10_17:25_19_05_19_05";
-    let parts = details.split("._.");
-    let insertLines = "";
-    for (let fI = 1; fI < parts.length; fI++) {
-        let partsInfo = parts[fI].split("_");
-        for (let pI = 0; pI < partsInfo.length; pI++) {
-            insertLines += `${partsInfo[pI]} <br/>`;
-        }
-        insertLines += `<hr>`;
-    }
-    $('#flights').html(insertLines);
-    */
-
-
-
-
-
-
-
-
 
 
 });

@@ -1,4 +1,5 @@
-﻿@{
+﻿@model IEnumerable<FlightSE.Models.UserFlight>
+@{
     ViewData["Title"] = "My Flights";
 }
 
@@ -6,6 +7,62 @@
 <div class="card col-8 searchResults userResultsCard">
     <div class="card-head"><h1>My Flights</h1></div>
     <div class="card-body" id="user-results">
-        <div><a type="button" class="btn btn-primary text-white" asp-area="" asp-controller="Home" asp-action="Index">Find New Flights</a></div>
-    </div>
+
+       
+      
+
+            
+
+
+
+
+
+
+
+
+
+<table>
+@foreach (var item in Model)
+{
+   
+@Html.DisplayFor(modelItem => item.UserID)
+
+@Html.DisplayFor(modelItem => item.Price)
+
+@Html.DisplayFor(modelItem => item.TotalFlightTimes)
+
+@Html.DisplayFor(modelItem => item.TotalDates)
+
+@Html.DisplayFor(modelItem => item.BookingLink)
+
+@Html.DisplayFor(modelItem => item.TotalTime)
+
+@Html.DisplayFor(modelItem => item.FlightPlaces)
+
+    string details = item.Details;
+    string[] parts = details.Split(new[] { "._." },
+    StringSplitOptions.RemoveEmptyEntries);
+    string insertLines = "";
+    for (int fI = 0; fI < parts.Length; fI++)
+    {
+    string[] partsInfo = parts[fI].Split(new[] { "_" },
+    StringSplitOptions.RemoveEmptyEntries);
+    for (int pI = 0; pI < partsInfo.Length; pI++)
+    {
+    insertLines += partsInfo[pI];
+    }
+    insertLines += "---NEXT---";
+    }
+    @insertLines;
+
+}
+</table>
+
+
+
+
+
+
+<div><a type="button" class="btn btn-primary text-white" asp-area="" asp-controller="Home" asp-action="Index">Find New Flights</a></div>
+</div>
 </div>

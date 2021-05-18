@@ -21,6 +21,7 @@ namespace FlightSE.Views.Locations
         {
             _context = context;
         }
+
         private JObject locations { get; set; }
         public List<Airport> GetAirports()
         {
@@ -90,6 +91,7 @@ namespace FlightSE.Views.Locations
             return RedirectToAction(nameof(Index));
         }
         // GET: Locations
+
         public async Task<IActionResult> Index()
         {
 

@@ -163,9 +163,9 @@ namespace FlightSE.Controllers
             return View();
         }
         [Authorize]
-        public IActionResult MyFlights()
+        public async Task<IActionResult> MyFlights()
         {
-            return View();
+            return View(await _context.UserFlight.Where(p => p.UserID == User.Identity.Name).OrderByDescending(a => a.ID).ToListAsync());
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
