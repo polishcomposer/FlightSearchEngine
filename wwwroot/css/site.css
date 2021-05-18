@@ -132,7 +132,23 @@ html {
     height: 180px;
 }
 
-@media (min-width: 768px) {
+@media only screen and (min-width: 768px) {
+
+    .form-floating {
+        font-size: 0.9rem;
+        padding-top: 10px;
+    }
+
+    body {
+        /* Margin bottom by footer height */
+        margin-bottom: 60px;
+        margin: 0px auto;
+    }
+
+    .form-floating input {
+        width: 200px !important;
+    }
+
     html {
         font-size: 16px;
     }
@@ -184,6 +200,7 @@ html {
 .form-group div {
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
 }
 
     .form-group div#searchButtonDiv {
@@ -229,9 +246,75 @@ html {
     min-height: 100%;
 }
 
+@media only screen and (max-width:767px) {
+    .display-4 {
+        margin-top: 20px !important;
+    }
+
+    .flightTime {
+        margin-top: 10px;
+    }
+
+    .cardsHead, .cardsHead2, .rightResult, .resultInside {
+        width: 90%;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .top-right-buttons {
+        margin-top: 20px;
+    }
+}
+
+@media only screen and (max-width:500px) {
+
+    .cardsHead, .cardsHead2, .card-flight, .rightResult, .resultInside {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .top-right-buttons {
+        margin-top: 20px;
+    }
+
+    body {
+        /* Margin bottom by footer height */
+        margin-bottom: 60px;
+        margin: 0px auto;
+        width: 130%;
+    }
+
+    #runSearch {
+        margin-left: 9%;
+    }
+
+    #searchButtonDiv {
+        width: 40%;
+    }
+
+    .searchPanel {
+        width: 90%;
+        margin-left: 10%;
+    }
+
+    .searchResults {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 0px;
+        padding-left: 0px;
+    }
+
+    #results {
+        margin: 10px !important;
+        width: 99%;
+    }
+}
+
 body {
     /* Margin bottom by footer height */
     margin-bottom: 60px;
+    margin: 0px auto;
 }
 
 .footer {
@@ -267,6 +350,10 @@ body {
     font-size: 0.9rem;
     padding-top: 10px;
 }
+
+    .form-floating input {
+        width: 300px;
+    }
 
 .passangers {
     width: 75px;
@@ -496,24 +583,28 @@ h1 {
     display: flex;
     flex-direction: column;
 }
+
 .covidE {
     font-style: italic;
     color: #686868;
 }
+
 #dead {
     color: red;
     font-weight: bold;
 }
+
 #recovered {
     color: green;
     font-weight: bold;
 }
-    .check-covid-body select {
-        margin: 0 auto;
-        width: 50%;
-    }
 
-    .check-covid-body h4 {
-        font-size: 1em;
-        text-align: center;
-    }
+.check-covid-body select {
+    margin: 0 auto;
+    width: 50%;
+}
+
+.check-covid-body h4 {
+    font-size: 1em;
+    text-align: center;
+}

@@ -161,7 +161,7 @@ $(document).ready(function () {
     
     $("#submitSearch").submit(function () {
         if ($(this).valid()) {
-            $("#runSearch").html(`<div class="card col-8 searchResults">
+            $("#runSearch").html(`<div class="card col-12 col-md-8 searchResults">
     <div class="card-body" id="results">
 <div class="sk-chase">
     <div class="sk-chase-dot"></div>
