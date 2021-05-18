@@ -8,61 +8,63 @@
     <div class="card-head"><h1>My Flights</h1></div>
     <div class="card-body" id="user-results">
 
-       
-      
-
-            
 
 
+        @foreach (var item in Model)
+        {
 
+            <div class="card mb-3 flightUserResult">
+                <div class="col-12">
+                    <div class="card-body">
+                        <div class="cardsHead">
+                            <h5 class="card-title">@Html.DisplayFor(modelItem => item.Price)</h5>
 
+                            <div class="userTotalTime"><span class="flightTime">@Html.DisplayFor(modelItem => item.TotalFlightTimes)</span> <span class="totalDates">@Html.DisplayFor(modelItem => item.TotalDates)</span></div>
+                            <div>    <a type="button" class="btn btn-primary flight-button btn-sm" href="@Html.DisplayFor(modelItem => item.BookingLink)" target="_blank">Book your flight (kiwi.com)</a>   <a type="button" class="btn btn-danger btn-sm delete-button" asp-action="Delete" asp-route-id="@item.ID">Delete</a></div>
+                        </div>
+                        <div class="cardsHead2">
+                            <span>@Html.DisplayFor(modelItem => item.FlightPlaces)</span>
+                            <span>Total time: @Html.DisplayFor(modelItem => item.TotalTime)</span>
+                        </div>
 
+                        @{
+                            string details = item.Details;
+                            string[] parts = details.Split(new[] { "._." },
+                            StringSplitOptions.RemoveEmptyEntries);
+                            for (int fI = 0; fI < parts.Length; fI++)
+                            {
+                                string[] partsInfo = parts[fI].Split(new[] { "_" },
+                                StringSplitOptions.RemoveEmptyEntries);
+                                
+                                   
+                                    <hr>
+                                    <div class="card-text card-flight">
+                                        <div class="leftResult">
+                                            <img src="@partsInfo[1]" alt="Airlines Logo" class="airlineImg">
+                                        </div>
+                                        <div class="rightResult">
+                                            <div class="resultInside">
+                                                <small class="text-muted">@partsInfo[2] <span>_@partsInfo[3]_</span> @partsInfo[4]</small>
+                                                <span class="flightTime">@partsInfo[5] - @partsInfo[6]</span>
+                                            </div>
+                                            <span>@partsInfo[7]/@partsInfo[8] - @partsInfo[9]/@partsInfo[10]</span>
+                                        </div>
+                                    </div>
 
+                                
+                            }
+                        }
 
-
-
-<table>
-@foreach (var item in Model)
-{
-   
-@Html.DisplayFor(modelItem => item.UserID)
-
-@Html.DisplayFor(modelItem => item.Price)
-
-@Html.DisplayFor(modelItem => item.TotalFlightTimes)
-
-@Html.DisplayFor(modelItem => item.TotalDates)
-
-@Html.DisplayFor(modelItem => item.BookingLink)
-
-@Html.DisplayFor(modelItem => item.TotalTime)
-
-@Html.DisplayFor(modelItem => item.FlightPlaces)
-
-    string details = item.Details;
-    string[] parts = details.Split(new[] { "._." },
-    StringSplitOptions.RemoveEmptyEntries);
-    string insertLines = "";
-    for (int fI = 0; fI < parts.Length; fI++)
-    {
-    string[] partsInfo = parts[fI].Split(new[] { "_" },
-    StringSplitOptions.RemoveEmptyEntries);
-    for (int pI = 0; pI < partsInfo.Length; pI++)
-    {
-    insertLines += partsInfo[pI];
-    }
-    insertLines += "---NEXT---";
-    }
-    @insertLines;
-
-}
-</table>
-
-
-
+                    </div>
+                </div>
+            </div>
 
 
 
-<div><a type="button" class="btn btn-primary text-white" asp-area="" asp-controller="Home" asp-action="Index">Find New Flights</a></div>
-</div>
+        }
+
+
+
+        <div><a type="button" class="btn btn-primary text-white" asp-area="" asp-controller="Home" asp-action="Index">Find New Flights</a></div>
+    </div>
 </div>

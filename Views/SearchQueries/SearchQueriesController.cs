@@ -18,7 +18,7 @@ namespace FlightSE.Views.SearchQueries
         {
             _context = context;
         }
-        
+        /*
         // GET: SearchQueries
         public async Task<IActionResult> Index()
         {
@@ -149,6 +149,6 @@ namespace FlightSE.Views.SearchQueries
         {
             return _context.SearchQuery.Any(e => e.ID == id);
         }
-        
+        */
     }
 }

@@ -110,6 +110,32 @@ namespace FlightSE.Controllers
             return Ok();
         }
 
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var userFlight = await _context.UserFlight
+                .FirstOrDefaultAsync(m => m.ID == id);
+            if (userFlight == null)
+            {
+                return NotFound();
+            }
+
+            return View(userFlight);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var userFlight = await _context.UserFlight.FindAsync(id);
+            _context.UserFlight.Remove(userFlight);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(MyFlights));
+        }
         public async Task<IActionResult> AddFlight(string UserID, string Price, string TotalFlightTimes, string TotalDates, string BookingLink, string TotalTime, string FlightPlaces, string Details, string FlightID)
         {
 

@@ -91,7 +91,7 @@ namespace FlightSE.Views.Locations
             return RedirectToAction(nameof(Index));
         }
         // GET: Locations
-
+        /*
         public async Task<IActionResult> Index()
         {
 
@@ -224,5 +224,6 @@ namespace FlightSE.Views.Locations
         {
             return _context.Location.Any(e => e.ID == id);
         }
+        */
     }
 }
