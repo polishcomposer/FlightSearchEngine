@@ -88,6 +88,31 @@ namespace FlightSE.Controllers
             }
 
         }
+
+
+        public JsonResult CheckCovid(string Country)
+        {
+
+            var url = $"https://covid-19-data.p.rapidapi.com/country/code?code={Country}";
+
+            var httpRequest = (HttpWebRequest)WebRequest.Create(url);
+
+            httpRequest.Headers["accept"] = "application/json";
+            httpRequest.Headers["x-rapidapi-key"] = "a2b8543599msh61f31ce8dd35036p1daae4jsn21bf23979fc2";
+            httpRequest.Headers["x-rapidapi-host"] = "covid-19-data.p.rapidapi.com";
+           
+            var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
+
+
+
+            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            {
+                var stringResponse = streamReader.ReadToEnd();
+                return Json(stringResponse);
+            }
+
+        }
+
         public async Task<IActionResult> AddQuery(string Way, int Adults, int Children, int Infant, string Class, int? Stopovers, string Currency, string From, string To, DateTime DateFrom, DateTime DateTo)
         {
 

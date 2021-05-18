@@ -497,5 +497,46 @@ No flights have been found based on the information provided.
         alert("Test account management is unavailable. Please create your own account.");
     });
 
+    $('#countriesList').on('change', function () {
+
+        $.ajax({
+            url: "/Home/CheckCovid",
+            method: "GET",
+            data: { Country: $(this).val() },
+            async: false,
+            success: function (covidResponse) {
+                let covidResponseData = JSON.parse(covidResponse);
+                function spreadN(s) {
+                    if (s > 0) {
+                        const string = s.toString();
+                        const reverse = string.split("").reverse().join("");
+                        const match = reverse.match(new RegExp('.{1,3}', 'g'));
+                        const join = match.join(' ');
+                        return join.split("").reverse().join("");
+                    } else {
+                        return '0';
+                    }
+                }
+                const covidData = covidResponseData[0];
+                const confirmed = covidData['confirmed'];
+                const critical = confirmed - (covidData['deaths'] + covidData['recovered']);
+                const deaths = covidData['deaths'];
+                const recovered = covidData['recovered'];
+                const deathRate = deaths / confirmed;
+                $('#covidResults').html(`<span class="covidE">Confirmed: </span><b>${spreadN(confirmed)}</b><br>
+                    <span class="covidE">Active: </span><b>${spreadN(critical)}</b><br>
+                    <span class="covidE">Recovered: </span><span id="recovered">${spreadN(recovered)}</span><br>
+                    <span class="covidE">Deaths: </span><span id="dead">${spreadN(deaths)}</span><br>
+                    <span class="covidE">Death rate: </span><b>${Math.round(deathRate * 100) / 100} %</b>`);
+
+            },
+            error: function (err) {
+                $('#covidResults').html(`Information about this country is not available.`);
+            }
+        }); 
+
+    });
+   
+   
 
 });
